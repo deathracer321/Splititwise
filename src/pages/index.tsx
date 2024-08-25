@@ -1,9 +1,11 @@
-import Login from "./components/Login";
+import Dashboard from "./components/Dashboard"
+import { createContext } from "react";
+
 
 export default function Home() {
   return (
     <main>
-      <Login/>
+      <Dashboard/>
     </main>
   );
 }
