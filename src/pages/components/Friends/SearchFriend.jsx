@@ -21,6 +21,23 @@ export default function SearchFriend(){
         }
     }
 
+    const sendFriendRequestHandler = async () =>{
+        if(searchString !== sessionStorage.getItem('userName')){
+            let request = await axios.post('./api/sendFriendRequest',{
+                requestedUsername : searchString,
+                myUsername : sessionStorage.getItem('userName'),
+                password : sessionStorage.getItem('password')
+            })
+            if(request.data.message === 'Successfully friend request sent!'){
+                alert(request.data.message)
+            }else{
+                alert(request.data.message)
+            }
+        }else{
+            alert("How can you give request to you yourself?")
+        }
+    }
+
     return <>
     <h1>Search Friends here</h1>
     <input type="text" placeholder="type here..." value={searchString} onChange={handleSearchChange}/>
@@ -28,7 +45,7 @@ export default function SearchFriend(){
     <br/>
     {
         showAddFriend &&
-    <button style={{backgroundColor:"green"}}>Add {searchString} as Friend?</button>
+    <button style={{backgroundColor:"green"}} onClick={sendFriendRequestHandler}>Add {searchString} as Friend?</button>
         }
     </>
 }
