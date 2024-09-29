@@ -25,6 +25,7 @@ export default function SignUp() {
         if(data.data.message==="Logged in successfully"){
           sessionStorage.setItem("userName",userName)
           sessionStorage.setItem("password",password)
+          localStorage.setItem("userInfo",JSON.stringify(data.data))
           router.push("./")
         }else{
           alert(data.data.message)

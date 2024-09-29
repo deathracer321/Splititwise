@@ -10,6 +10,7 @@ export default function Dashboard() {
   const handleLogout = () => {
     sessionStorage.removeItem("userName");
     sessionStorage.removeItem("password");
+    localStorage.removeItem("userInfo")
     router.push("./Login");
   };
 
