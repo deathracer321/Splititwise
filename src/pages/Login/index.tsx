@@ -22,7 +22,7 @@ export default function SignUp() {
             "password" : password
         })
         console.log(data.data)
-        if(data.data.message==="loggedin"){
+        if(data.data.message==="Logged in successfully"){
           sessionStorage.setItem("userName",userName)
           sessionStorage.setItem("password",password)
           router.push("./")

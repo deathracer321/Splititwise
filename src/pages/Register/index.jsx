@@ -26,7 +26,7 @@ export default function SignUp() {
         alert(data.data.message)
         if(data.data.message==="User created successfully"){
           router.push('/Login')
-        }else if(data.data.message==='User already exists Please Login'){
+        }else if(data.data.message==='User already exists. Please log in.'){
           router.push('/Login')
         }
     } catch(error){
