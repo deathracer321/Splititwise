@@ -30,7 +30,7 @@ export default function SignUp() {
           router.push('/Login')
         }
     } catch(error){
-        console.log(error)
+        alert(error)
     }
 
    }

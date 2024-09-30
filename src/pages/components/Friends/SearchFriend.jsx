@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useState } from "react"
+import { useState ,useContext} from "react";
+import { AppContext } from "src/pages";
+import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
 export default function SearchFriend(){
     const [searchString,setSearchString] = useState('');
     const [showAddFriend,setShowAddFriend] = useState(false);
-
+    const { state, setState } = useContext(AppContext);
     const handleSearchChange = (e) =>{
         setSearchString(e.target.value)
         setShowAddFriend(false)
@@ -22,6 +24,8 @@ export default function SearchFriend(){
     }
 
     const sendFriendRequestHandler = async () =>{
+        const userName = sessionStorage.getItem("userName");
+        const password = sessionStorage.getItem("password");
         if(searchString !== sessionStorage.getItem('userName')){
             let request = await axios.post('./api/sendFriendRequest',{
                 requestedUsername : searchString,
@@ -30,6 +34,9 @@ export default function SearchFriend(){
             })
             if(request.data.message === 'Successfully friend request sent!'){
                 alert(request.data.message)
+                 // Fetch updated user info and update state
+                 const updatedUserInfo = await fetchAndSyncUserInfo(userName, password);
+                    setState(updatedUserInfo); // Now update state after getting the new data
             }else{
                 alert(request.data.message)
             }

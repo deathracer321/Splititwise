@@ -21,7 +21,6 @@ export default function SignUp() {
             "userName" : userName,
             "password" : password
         })
-        console.log(data.data)
         if(data.data.message==="Logged in successfully"){
           sessionStorage.setItem("userName",userName)
           sessionStorage.setItem("password",password)
@@ -31,7 +30,7 @@ export default function SignUp() {
           alert(data.data.message)
         }
     } catch(error){
-        console.log(error)
+        alert(error)
     }
 
    }

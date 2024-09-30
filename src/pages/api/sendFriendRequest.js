@@ -43,7 +43,13 @@ export default async function handler(req, res) {
           }else{
               // Add the myUsername to the friendReqs array
               requestedUserData.friendReqs.push(myUsername);
-              
+              if(!myUserData.friends){
+                myUserData.friends = []
+              }
+              myUserData.friends.push(requestedUsername)
+              await update(myUsernameRef,{
+                friends : myUserData.friends
+              })
               await update(requestedUsernameRef, {
                   friendReqs: requestedUserData.friendReqs,
                 });
@@ -60,7 +66,6 @@ export default async function handler(req, res) {
         }
       }
     } catch (error) {
-      console.error("Error logging in:", error);
       res.status(500).json({ error: "Failed to log in" });
     }
   }

@@ -21,7 +21,6 @@ export default async function handler(req, res) {
         res.status(201).json({ message: 'User created successfully' });
       }
     } catch (error) {
-      console.error("Error creating user:", error);
       res.status(500).json({ error: 'Failed to create user' });
     }
     
@@ -38,7 +37,6 @@ export default async function handler(req, res) {
         res.status(404).json({ message: "No users found" });
       }
     } catch (error) {
-      console.error("Error retrieving users:", error);
       res.status(500).json({ error: 'Failed to retrieve users' });
     }
   } else {

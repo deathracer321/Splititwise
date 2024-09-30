@@ -15,7 +15,6 @@ export default function Dashboard() {
   };
 
   const tabClickHandler = (e) =>{
-    console.log(e.target.id)
     switch(e.target.id){
       case 'Friends':
         setCurrentTab('Friends')

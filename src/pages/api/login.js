@@ -27,7 +27,6 @@ export default async function handler(req, res) {
         }
       }
     } catch (error) {
-      console.error("Error logging in:", error);
       res.status(500).json({ error: 'Failed to log in' });
     }
   } else {
