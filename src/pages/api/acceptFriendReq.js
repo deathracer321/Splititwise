@@ -6,10 +6,10 @@ export default async function handler(req, res) {
     const { userName, password, whomToAcceptOrReject, action } = req.body;
 
     try {
-      // Reference to the user in the Realtime Database
+      // Reference to the current user in the Realtime Database
       const userRef = ref(database, 'users/' + userName);
       
-      // Get the user data from the database
+      // Get the current user data from the database
       const snapshot = await get(userRef);
 
       if (!snapshot.exists()) {
@@ -41,15 +41,30 @@ export default async function handler(req, res) {
       }
 
       if (action === "reject") {
-        // For rejection, just update the friendReqs array and return
+        // Handle rejection logic - remove friend request from current user
         await update(userRef, { friendReqs: updatedFriendReqs });
+
+        // Also remove current user's name from the friends array of the requested person
+        const whomToRejectRef = ref(database, 'users/' + whomToAcceptOrReject);
+        const whomToRejectSnapshot = await get(whomToRejectRef);
+
+        if (whomToRejectSnapshot.exists()) {
+          const whomToRejectData = whomToRejectSnapshot.val();
+          const updatedWhomToRejectFriends = whomToRejectData.friends
+            ? [...whomToRejectData.friends].filter(friend => friend !== userName)
+            : [];
+
+          // Update the requested person's friends array
+          await update(whomToRejectRef, { friends: updatedWhomToRejectFriends });
+        }
+
         res.status(201).json({ message: 'Friend request rejected', userInfo: { ...userData, friendReqs: updatedFriendReqs } });
       } else if (action === "accept") {
         // For acceptance, add to the friends array and update friendReqs
         const updatedFriends = userData.friends ? [...userData.friends] : [];
         updatedFriends.push(whomToAcceptOrReject);
 
-        // Update the user's friends and friendReqs in the database
+        // Update the current user's friends and friendReqs in the database
         await update(userRef, {
           friendReqs: updatedFriendReqs,
           friends: updatedFriends,
