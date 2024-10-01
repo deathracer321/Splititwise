@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Friends from './Friends/Friends'
-import Groups from './Groups'
+import Groups from './Groups/Groups'
 import Profile from './Profile'
 export default function Dashboard() {
   const router = useRouter();
