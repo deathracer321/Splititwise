@@ -37,7 +37,7 @@ export default async function handler(req, res) {
           // Respond with the group IDs where the user is a member or admin
           res.status(200).json({ userGroups });
         } else {
-          res.status(404).json({ message: 'No groups found' });
+          res.status(200).json({ message: 'No groups found' });
         }
       } else {
         res.status(404).json({ message: 'User does not exist, please sign up' });
