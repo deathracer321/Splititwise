@@ -1,0 +1,92 @@
+{
+  "groups": {
+    "asd": {
+      "admin": "harish",
+      "members": [
+        "harish"
+      ]
+    },
+    "deepan_asd": {
+      "admin": "deepan",
+      "members": [
+        "deepan"
+      ]
+    },
+    "harish_12": {
+      "admin": "harish",
+      "members": [
+        "harish",
+        "tharun"
+      ]
+    },
+    "harish_321": {
+      "admin": "harish",
+      "members": [
+        "harish"
+      ]
+    },
+    "harish_5": {
+      "admin": "harish",
+      "members": [
+        "harish"
+      ]
+    }
+  },
+  "users": {
+    "11": {
+      "friendReqs": [
+        "harish"
+      ],
+      "password": "11",
+      "userName": "11"
+    },
+    "Saitama": {
+      "friends": [
+        "harish"
+      ],
+      "password": "Sairam@2009",
+      "userName": "Saitama"
+    },
+    "deepan": {
+      "friends": [
+        "harish"
+      ],
+      "password": "deepan",
+      "userName": "deepan"
+    },
+    "harish": {
+      "friends": [
+        "tharun",
+        "11",
+        "paithiyam",
+        "deepan"
+      ],
+      "password": "harish",
+      "userName": "harish"
+    },
+    "tharun": {
+      "friends": [
+        "harish"
+      ],
+      "password": "tharun",
+      "userName": "tharun"
+    }
+  },
+  "FriendToFriendTransactions" :{
+    "harish_tharun" : [
+      {
+        "expenseID" : "asdf",
+        "dateAdded" : "Monday 26",
+        "expenseTitle" : "morning dinner",
+        "islent" : true,
+        "totalAmount" : 50,
+        "whoAddedExpense" : "tharun",
+        "expensePaidBy" : "tharun",
+        "split" : {
+          "tharun" : 25,
+          "harish" : 25
+        }
+      }
+    ]
+  }
+}
