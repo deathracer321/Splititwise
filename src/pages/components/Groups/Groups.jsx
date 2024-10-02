@@ -6,7 +6,8 @@ export default function Groups(){
 
     const [groupName,setGroupName] = useState('')
 
-    const createNewGroupHandler = async () =>{
+    const createNewGroupHandler = async (e) =>{
+        e.preventDefault();
         const response  = await axios.post('/api/groups/createGroup',{
             userName : sessionStorage.getItem('userName'),
             password : sessionStorage.getItem('password'),
@@ -17,6 +18,7 @@ export default function Groups(){
         }else{
             alert(response.data.message)
         }
+        setGroupName("")
     }
 
     const newGroupNameHandler = (e) =>{
@@ -28,13 +30,16 @@ export default function Groups(){
     <br/>
     <br/>
     <br/>
-    <label style={{border:"1px solid black"}} htmlFor="newGroupInput">
-    <input type="text" value={groupName} onChange={newGroupNameHandler}/>
+    <form onSubmit={createNewGroupHandler}>
 
-    <button onClick={createNewGroupHandler} id="newGroupInput" className="btn btn-primary rounded-circle" style={{ width: '100px', height: '100px' }}>
+    <label style={{border:"1px solid black"}} htmlFor="newGroupInput">
+    <input type="text" required={true} value={groupName} onChange={newGroupNameHandler}/>
+
+    <button id="newGroupInput" className="btn btn-primary rounded-circle" style={{ width: '100px', height: '100px' }}>
         Create group<i className="bi bi-plus"></i>
       </button>
     </label>
+    </form>
     <br/>
     <br/>
     <h1>We list your groups here</h1>

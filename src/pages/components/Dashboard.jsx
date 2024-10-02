@@ -2,10 +2,16 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Friends from './Friends/Friends'
 import Groups from './Groups/Groups'
-import Profile from './Profile'
+import Profile from './Profile';
+import { useContext } from "react";
+import { AppContext } from "..";
 export default function Dashboard() {
+
+  const {state,setState} = useContext(AppContext);
+
   const router = useRouter();
   const [currentTab,setCurrentTab] = useState('Friends');
+
 
   const handleLogout = () => {
     sessionStorage.removeItem("userName");
@@ -17,6 +23,7 @@ export default function Dashboard() {
   const tabClickHandler = (e) =>{
     switch(e.target.id){
       case 'Friends':
+        setState((prevState)=>({...prevState,specificTopic:""}))
         setCurrentTab('Friends')
         break;
       case 'Groups':

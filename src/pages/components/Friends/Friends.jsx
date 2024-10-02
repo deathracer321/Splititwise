@@ -1,25 +1,37 @@
-import { useContext, useEffect } from 'react'
-import FriendRequests from './FriendRequests'
-import SearchFriend from './SearchFriend'
+import { useContext, useEffect } from "react";
+import FriendRequests from "./FriendRequests";
+import SearchFriend from "./SearchFriend";
 import { AppContext } from "src/pages";
-export default function Friends(){
+import SpecificTopic from "../SpecificTopic";
+export default function Friends() {
+  const { state, setState } = useContext(AppContext);
 
-    const {state,setState} = useContext(AppContext)
+  useEffect(() => {}, [state]);
 
-    useEffect(()=>{
+  const friendExpandHandler = (friend) => {
+    setState((prevState) => ({ ...prevState, specificTopic: friend }));
+  };
 
-    },[state])
-
-    return <>
-        <SearchFriend/>
-        <FriendRequests/>
-    <h1>We list your friends here:</h1>
-        {
-            state?.userInfo?.friends?.map((friend)=>{
-                return <p>
-                    {friend}
-                </p>
-            })
-        }
+  return (
+    <>
+      {state.specificTopic ? (
+        <SpecificTopic topicName={state?.specificTopic} />
+      ) : (
+        <div>
+          <SearchFriend />
+          <FriendRequests />
+          <h1>We list your friends here:</h1>
+          {state?.userInfo?.friends?.map((friend) => {
+            return (
+              <p>
+                <button onClick={() => friendExpandHandler(friend)}>
+                  {friend}
+                </button>
+              </p>
+            );
+          })}
+        </div>
+      )}
     </>
+  );
 }
