@@ -45,7 +45,10 @@ export default function AddExpense({expenseWith}){
             <option value={userName}>{userName}</option>
             <option value={expenseWith}>{expenseWith}</option>
         </select>
-        Split: <button>Equally</button>
+        Split: <select>
+        <option>Equally</option>
+        <option>Unequally</option>
+        </select>
         </form>
     </div>
 }

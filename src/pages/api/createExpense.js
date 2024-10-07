@@ -6,11 +6,6 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { userName, password, expense, expenseWith } = req.body;
 
-    console.log(userName, "userName");
-    console.log(password, "password");
-    console.log(expense, "expense");
-    console.log(expenseWith, "expenseWith");
-
     let allDataToCreateExpense = { 
       "expenseID": uuidv4(),
       "dateAdded": new Date().toISOString(),
@@ -32,17 +27,14 @@ export default async function handler(req, res) {
       const anotherUserSnapshot = await get(anotherUserTransactionRef);
 
       if (!thisUserSnapshot.exists() && !anotherUserSnapshot.exists()) {
-        console.log("both don't exist");
         const expenseID = uuidv4();
         await set(ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith + '/' + expenseID), allDataToCreateExpense);
         res.status(200).json({ message: 'This is your first transaction with your friend' });
       } else if (thisUserSnapshot.exists()) {
-        console.log("harish_tharun exist");
         const newExpenseID = uuidv4();
         await update(ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith + '/' + newExpenseID), allDataToCreateExpense);
         res.status(200).json({ message: "Expense Created Successfully" });
       } else if (anotherUserSnapshot.exists()) {
-        console.log("tharun_harish exist");
         const newExpenseID = uuidv4();
         await update(ref(database, 'friendToFriendTransactions/' + expenseWith + "_" + userName + '/' + newExpenseID), allDataToCreateExpense);
         res.status(200).json({ message: "Expense Created Successfully" });
@@ -50,7 +42,6 @@ export default async function handler(req, res) {
         res.status(200).json({ message: "Something fishy? :)" });
       }
     } catch (error) {
-      console.error('Error:', error);
       res.status(500).json({ error: 'Something went wrong', details: error.message });
     }
   } else {

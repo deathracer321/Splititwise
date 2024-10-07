@@ -7,7 +7,7 @@ export default function SpecificTopic({topicName}){
     <div style={{border: "5px solid brown"}}>
 
     <p>Below you see all expenses with : {topicName} </p>
-    <EachExpense/>
+    <EachExpense topicName={topicName}/>
     </div>
     </>
 }
