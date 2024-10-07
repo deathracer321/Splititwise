@@ -22,8 +22,8 @@ export default function DisplayGroups(){
     return <>
     Here we display all the groups that you are in:
     <ul>
-    {groups?.userGroups?.map((group)=>{
-        return <li>{group}</li>
+    {groups?.userGroups?.map((group,ind)=>{
+        return <li key={ind}>{group}</li>
     })}
     </ul>
     </>

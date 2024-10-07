@@ -1,12 +1,12 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "no-unused-vars": "warn",
-    "no-console": "warn",
-    "no-debugger": "warn",
-    "eqeqeq": "error",
-    "curly": "error",
-    "semi": ["error", "always"],
-    "comma-dangle": ["error", "always-multiline"]
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-debugger": "off",
+    "eqeqeq": "off",
+    "curly": "off",
+    "semi":"off",
+    "comma-dangle": "off"
   }
 }

@@ -50,7 +50,7 @@ export default function Dashboard() {
     if (!sessionStorage.getItem("userName")) {
       router.push("./Login");
     }
-  }, []);
+  }, [router]);
 
   return (
     <>

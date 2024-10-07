@@ -12,7 +12,7 @@ export default function SignUp() {
     if(sessionStorage.getItem("userName")){
       router.push("./")
     }
-  },[])
+  },[router])
 
    const handleSubmit = async (e:any) =>{
     e.preventDefault();

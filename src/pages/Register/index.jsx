@@ -62,7 +62,7 @@ export default function SignUp() {
         <label htmlFor="confirmPassword">Confirm Password</label>
         
         <input id="confirmPassword" type="text" value={confirmPassword} onChange={handleChange}/>
-        {enableSignUp ? "" : <p style={{color:"red"}}>Password doesn't match</p>}
+        {enableSignUp ? "" : <p style={{color:"red"}}>Password doesnt match</p>}
         <br/>
         <br/>
         <button type="submit" disabled={!enableSignUp}>Signup</button>

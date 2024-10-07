@@ -21,9 +21,9 @@ export default function Friends() {
           <SearchFriend />
           <FriendRequests />
           <h1>We list your friends here:</h1>
-          {state?.userInfo?.friends?.map((friend) => {
+          {state?.userInfo?.friends?.map((friend,ind) => {
             return (
-              <p>
+              <p key={ind}>
                 <button onClick={() => friendExpandHandler(friend)}>
                   {friend}
                 </button>
