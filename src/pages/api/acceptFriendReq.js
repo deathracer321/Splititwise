@@ -60,15 +60,29 @@ export default async function handler(req, res) {
 
         res.status(201).json({ message: 'Friend request rejected', userInfo: { ...userData, friendReqs: updatedFriendReqs } });
       } else if (action === "accept") {
+
+        const whomToRejectRef = ref(database, 'users/' + whomToAcceptOrReject);
+        const whomToRejectSnapshot = await get(whomToRejectRef);
+        const whomToUpdateData = whomToRejectSnapshot.val();
+
         // For acceptance, add to the friends array and update friendReqs
         const updatedFriends = userData.friends ? [...userData.friends] : [];
         updatedFriends.push(whomToAcceptOrReject);
+
+        // for the person who sent the friend req update their friend list
+        const whomToupdateFriends = whomToUpdateData.friends ? [...whomToUpdateData.friends] : [];
+        whomToupdateFriends.push(userName); 
 
         // Update the current user's friends and friendReqs in the database
         await update(userRef, {
           friendReqs: updatedFriendReqs,
           friends: updatedFriends,
         });
+
+        //update the whomToAcceptOrReject friends list 
+        await update(whomToRejectRef,{
+          friends : whomToupdateFriends
+        })
 
         res.status(201).json({ message: 'Friend request accepted', userInfo: { ...userData, friendReqs: updatedFriendReqs, friends: updatedFriends } });
       } else {

@@ -46,10 +46,6 @@ export default async function handler(req, res) {
               if(!myUserData.friends){
                 myUserData.friends = []
               }
-              myUserData.friends.push(requestedUsername)
-              await update(myUsernameRef,{
-                friends : myUserData.friends
-              })
               await update(requestedUsernameRef, {
                   friendReqs: requestedUserData.friendReqs,
                 });
