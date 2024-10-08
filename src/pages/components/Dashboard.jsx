@@ -54,12 +54,14 @@ export default function Dashboard() {
 
   return (
     <>
+    <div className="dashboardMainView">
       <button onClick={handleLogout} className="Logout">
         Logout
       </button>
 
       {returnCurrentComponent(currentTab)}
 
+    </div>
       <div className="dashboardBottomMenu">
         <button onClick={tabClickHandler} id='Friends'>Friends</button>
         <button onClick={tabClickHandler} id='Groups'>Groups</button>

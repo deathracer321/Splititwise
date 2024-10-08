@@ -1,4 +1,9 @@
-.dashboardBottomMenu{
+.dashboardMainView {
+    height: calc(100vh - 6vh); /* Subtract the height of the bottom menu from the total viewport height */
+    overflow-y: auto; /* Optional: Adds scrolling if the content inside exceeds the view height */
+  }
+  
+  .dashboardBottomMenu {
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -6,8 +11,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-.dashboardBottomMenu button{
+  }
+  
+  .dashboardBottomMenu button {
     flex: 1;
-    height: 50px;
-}
+    height: 6vh;
+  }
+  

@@ -13,9 +13,10 @@ export default async function handler(req, res) {
       "totalAmount": expense?.amount,
       "whoAddedExpense": userName,
       "expensePaidBy": expense.expensePaidBy,
-      "split": {
-        "tharun": expense?.amount / 2,
-        "harish": expense?.amount / 2
+      "isEqualSplit" : expense.isEqualSplit,
+      "unEqualSplit" : {
+        [userName]: expense.isEqualSplit ? expense.amount/2 : expense.unEqualSplit[userName],
+        [expenseWith]: expense.isEqualSplit ? expense.amount/2 : expense.unEqualSplit[expenseWith],
       }
     };
 
