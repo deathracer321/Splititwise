@@ -1,4 +1,4 @@
-export default function EachExpense({ topicName, expensesData = {} }) {
+export default function EachExpense({ topicName, expensesData = [] }) {
   const expenseStyle = {
     border: "1px solid black",
     borderCollapse: "collapse",
@@ -16,10 +16,10 @@ export default function EachExpense({ topicName, expensesData = {} }) {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(expensesData).map((eachItem, ind) => (
+          {expensesData?.length>0 && expensesData.map((eachItem, ind) => (
             <tr key={ind}>
               <td style={expenseStyle}>
-                {new Date(expensesData[eachItem].dateAdded).toLocaleDateString(
+                {new Date(eachItem.dateAdded).toLocaleDateString(
                   "en-GB",
                   {
                     hour: "2-digit",
@@ -29,26 +29,26 @@ export default function EachExpense({ topicName, expensesData = {} }) {
                 )}
               </td>
               <td style={expenseStyle}>
-                {expensesData[eachItem].expenseTitle}
+                {eachItem.expenseTitle}
               </td>
               <td style={expenseStyle}>
-                {expensesData[eachItem].expensePaidBy ===
+                {eachItem.expensePaidBy ===
                 sessionStorage.getItem("userName")
                   ? "Yes"
                   : "No"}
               </td>
               <td style={expenseStyle}>
-                {expensesData[eachItem].isEqualSplit ? "Yes" : "No"}
+                {eachItem.isEqualSplit ? "Yes" : "No"}
               </td>
               <td style={expenseStyle}>
                 <div style={{ color: "blue" }}>
-                  Total: {expensesData[eachItem].totalAmount}
+                  Total: {eachItem.totalAmount}
                 </div>
                 <br />
-                {expensesData[eachItem]?.isEqualSplit ? (
+                {eachItem?.isEqualSplit ? (
                   <div style={{color: "red"}}>
                     your share : 
-                  {expensesData[eachItem]?.unEqualSplit[
+                  {eachItem?.unEqualSplit[
                     sessionStorage.getItem("userName")
                   ]}
                   </div>
@@ -58,14 +58,14 @@ export default function EachExpense({ topicName, expensesData = {} }) {
                     <div
                       style={{
                         color:
-                          expensesData[eachItem].expensePaidBy ===
+                          eachItem.expensePaidBy ===
                           sessionStorage.getItem("userName")
                             ? "green"
                             : "red",
                       }}
                     >
                       {
-                        expensesData[eachItem]?.unEqualSplit[
+                        eachItem?.unEqualSplit[
                           sessionStorage.getItem("userName")
                         ]
                       }
@@ -75,13 +75,13 @@ export default function EachExpense({ topicName, expensesData = {} }) {
                     <div
                       style={{
                         color:
-                          expensesData[eachItem].expensePaidBy ===
+                          eachItem.expensePaidBy ===
                           sessionStorage.getItem("userName")
                             ? "red"
                             : "green",
                       }}
                     >
-                      {expensesData[eachItem]?.unEqualSplit[topicName]}
+                      {eachItem?.unEqualSplit[topicName]}
                     </div>
                   </>
                 )}

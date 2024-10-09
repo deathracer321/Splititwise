@@ -6,7 +6,8 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { userName, password, expense, expenseWith } = req.body;
 
-    let allDataToCreateExpense = { 
+    // Prepare the expense data
+    let expenseData = { 
       "expenseID": uuidv4(),
       "dateAdded": new Date().toISOString(),
       "expenseTitle": expense?.desc,
@@ -21,23 +22,28 @@ export default async function handler(req, res) {
     };
 
     try {
-      const userTransactionRef = ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith);
+      const userTransactionRef = ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith );
       const anotherUserTransactionRef = ref(database, 'friendToFriendTransactions/' + expenseWith + "_" + userName);
       
       const thisUserSnapshot = await get(userTransactionRef);
       const anotherUserSnapshot = await get(anotherUserTransactionRef);
 
       if (!thisUserSnapshot.exists() && !anotherUserSnapshot.exists()) {
-        const expenseID = uuidv4();
-        await set(ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith + '/' + expenseID), allDataToCreateExpense);
+        // Create a new array for expenses if no transaction history exists
+        const newExpenseArray = [expenseData];
+        await set(ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith), newExpenseArray);
         res.status(200).json({ message: 'This is your first transaction with your friend' });
       } else if (thisUserSnapshot.exists()) {
-        const newExpenseID = uuidv4();
-        await update(ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith + '/' + newExpenseID), allDataToCreateExpense);
+        // Update the existing expense array for this user
+        const existingExpenses = thisUserSnapshot.val();
+        existingExpenses.unshift(expenseData);  // Add the new expense to the array
+        await set(userTransactionRef, existingExpenses);  // Update the array in the database
         res.status(200).json({ message: "Expense Created Successfully" });
       } else if (anotherUserSnapshot.exists()) {
-        const newExpenseID = uuidv4();
-        await update(ref(database, 'friendToFriendTransactions/' + expenseWith + "_" + userName + '/' + newExpenseID), allDataToCreateExpense);
+        // Update the existing expense array for the other user
+        const existingExpenses = anotherUserSnapshot.val();
+        existingExpenses.unshift(expenseData);  // Add the new expense to the array
+        await set(anotherUserTransactionRef, existingExpenses);  // Update the array in the database
         res.status(200).json({ message: "Expense Created Successfully" });
       } else {
         res.status(200).json({ message: "Something fishy? :)" });
