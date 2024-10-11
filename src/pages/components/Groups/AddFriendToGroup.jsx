@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState ,useContext} from "react";
 import { AppContext } from "src/pages";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
-export default function SearchFriend(){
+export default function AddFriendToGroup({groupName}){
     const [searchString,setSearchString] = useState('');
     const [showAddFriend,setShowAddFriend] = useState(false);
     const { state, setState } = useContext(AppContext);
@@ -27,22 +27,26 @@ export default function SearchFriend(){
         const userName = sessionStorage.getItem("userName");
         const password = sessionStorage.getItem("password");
         if(searchString !== sessionStorage.getItem('userName')){
-            let request = await axios.post('./api/sendFriendRequest',{
+            let request = await axios.post('./api/groups/addFriendToGroup',{
                 requestedUsername : searchString,
                 myUsername : sessionStorage.getItem('userName'),
-                password : sessionStorage.getItem('password')
+                password : sessionStorage.getItem('password'),
+                groupName : groupName
             })
-            if(request.data.message === 'Successfully friend request sent!'){
+            if(request.data.message === 'Added friend to Group Successfully'){
                 alert(request.data.message)
                  // Fetch updated user info and update state
-                 const updatedUserInfo = await fetchAndSyncUserInfo(userName, password);
-                    setState(updatedUserInfo); // Now update state after getting the new data
+                 const updatedGroupInfo = await fetchAndSyncUserInfo(userName, password);
+                    setState((prevState)=> {
+                        return {...prevState,updatedGroupInfo:updatedGroupInfo}}) // Now update state after getting the new data
             }else{
                 alert(request.data.message)
             }
         }else{
             alert("How can you give request to you yourself?")
         }
+        setSearchString('')
+        setShowAddFriend(false)
     }
 
     return <>
@@ -52,7 +56,7 @@ export default function SearchFriend(){
     <br/>
     {
         showAddFriend &&
-    <button style={{backgroundColor:"green"}} onClick={sendFriendRequestHandler}>Add {searchString} as Friend?</button>
+    <button style={{backgroundColor:"green"}} onClick={sendFriendRequestHandler}>Add {searchString} to {groupName}?</button>
         }
     </>
 }

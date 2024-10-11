@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import AddFriendToGroup from './AddFriendToGroup'
 import axios from "axios";
 
 export default function SpecificGroup({ topicName }) {
@@ -41,18 +41,22 @@ export default function SpecificGroup({ topicName }) {
                 <EachExpense topicName={topicName} expensesData={expensesData} />
             </div> */}
 
-            this is Group {topicName}
+            Add your {topicName} Group Expenses here
             
             <div>
+                <AddFriendToGroup groupName={topicName}/>
+                <b>Add friend to group component</b>
                 do not show this component if he is not admin
                 Add group members if admin , he can add anyone(literally anyone)
             </div>
 
             <div>
-                show all add expense here, anyone in the group are allowed to add expenses
+                <b>Add Group Expense</b>
+                show add expense here, anyone in the group are allowed to add expenses
             </div>
 
             <div>
+                <b>ShowEachExpense</b>
                 show all the expenses in the group here
             </div>
             

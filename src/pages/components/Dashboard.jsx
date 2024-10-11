@@ -58,7 +58,7 @@ export default function Dashboard() {
     <>
     <div className="dashboardMainView">
       <button onClick={handleLogout} className="Logout">
-        Logout
+        Logout as {sessionStorage.getItem('userName')}
       </button>
 
       {returnCurrentComponent(currentTab)}
