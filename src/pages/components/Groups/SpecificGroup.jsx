@@ -1,35 +1,42 @@
 import { useState, useEffect } from "react";
 import AddFriendToGroup from './AddFriendToGroup'
 import axios from "axios";
+import AddGroupExpense from './AddGroupExpense'
+import EachExpense from "../Groups/EachGroupExpense";
 
 export default function SpecificGroup({ topicName }) {
-    const [expensesData, setExpensesData] = useState({});
+    const [groupData, setGroupData] = useState({});
 
     // Fetch all expenses on mount
-    // const fetchAllExpenses = async () => {
-    //     const response = await axios.post('/api/getGroupExpenses', {
-    //         userName: sessionStorage.getItem('userName'),
-    //         password: sessionStorage.getItem('password'),
-    //         expenseWith: topicName
-    //     });
-    //     setExpensesData(response.data.data);
-    // };
+    const fetchAllExpenses = async () => {
+        const response = await axios.post('/api/groups/getGroupData', {
+            userName: sessionStorage.getItem('userName'),
+            password: sessionStorage.getItem('password'),
+            groupName: topicName
+        });
+        setGroupData(response.data.groupData);
+    };
 
-    // useEffect(() => {
-    //     fetchAllExpenses();
-    // }, []);
+    useEffect(() => {
+        fetchAllExpenses();
+    }, []);
 
     // Function to handle adding a new expense and updating the expenses data
-    // const handleNewExpense = async (newExpense) => {
-    //     const response = await axios.post('/api/createExpense', newExpense);
-    //     if (response.data.message === "Expense Created Successfully") {
-    //         // Fetch expenses again to reflect the new addition
-    //         fetchAllExpenses();
-    //         alert("Expense added successfully");
-    //     } else {
-    //         alert(response.data.message);
-    //     }
-    // };
+    const handleNewExpense = async (newExpense) => {
+        const response = await axios.post('/api/groups/addGroupExpense', {
+            userName: sessionStorage.getItem('userName'),
+            password: sessionStorage.getItem('password'),
+            expense: newExpense,
+            groupName: topicName
+        });
+        if (response.data.message === "Expense Created Successfully") {
+            // Fetch expenses again to reflect the new addition
+            fetchAllExpenses();
+            alert("Expense added successfully");
+        } else {
+            alert(response.data.message);
+        }
+    };
 
     return (
         <>
@@ -45,19 +52,15 @@ export default function SpecificGroup({ topicName }) {
             
             <div>
                 <AddFriendToGroup groupName={topicName}/>
-                <b>Add friend to group component</b>
-                do not show this component if he is not admin
-                Add group members if admin , he can add anyone(literally anyone)
             </div>
 
             <div>
-                <b>Add Group Expense</b>
-                show add expense here, anyone in the group are allowed to add expenses
+                <AddGroupExpense expenseWith={groupData.members} onAddExpense={handleNewExpense} groupName={topicName}/>
             </div>
 
             <div>
-                <b>ShowEachExpense</b>
-                show all the expenses in the group here
+
+                <EachExpense topicName={topicName} expensesData={groupData.expenses}/>
             </div>
             
         </>
