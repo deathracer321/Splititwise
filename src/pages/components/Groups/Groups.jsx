@@ -1,8 +1,11 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
-import DisplayGroups from './DisplayGroups'
+import { useEffect, useState, useContext } from "react";
+import DisplayGroups from './DisplayGroups';
+import { AppContext } from "src/pages";
+import SpecificGroup from "./SpecificGroup";
 
 export default function Groups(){
+    const { state, setState } = useContext(AppContext);
 
     const [groupName,setGroupName] = useState('')
 
@@ -27,22 +30,29 @@ export default function Groups(){
 
 
     return <>
-    <br/>
-    <br/>
-    <br/>
-    <form onSubmit={createNewGroupHandler}>
-
-    <label style={{border:"1px solid black"}} htmlFor="newGroupInput">
-    <input type="text" required={true} value={groupName} onChange={newGroupNameHandler}/>
-
-    <button id="newGroupInput" className="btn btn-primary rounded-circle" style={{ width: '100px', height: '100px' }}>
-        Create group<i className="bi bi-plus"></i>
-      </button>
-    </label>
-    </form>
-    <br/>
-    <br/>
-    <h1>We list your groups here</h1>
-    <DisplayGroups/>
+    {state.specificGroup ? (
+        <SpecificGroup topicName={state?.specificGroup} />
+      ) : (
+<>
+          <br/>
+          <br/>
+          <br/>
+          <form onSubmit={createNewGroupHandler}>
+      
+          <label style={{border:"1px solid black"}} htmlFor="newGroupInput">
+          <input type="text" required={true} value={groupName} onChange={newGroupNameHandler}/>
+      
+          <button id="newGroupInput" className="btn btn-primary rounded-circle" style={{ width: '100px', height: '100px' }}>
+              Create group<i className="bi bi-plus"></i>
+            </button>
+          </label>
+          </form>
+          <br/>
+          <br/>
+          <h1>We list your groups here</h1>
+          <DisplayGroups/>
+          </>
+      )
+      }
     </>
 }

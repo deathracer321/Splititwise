@@ -23,13 +23,15 @@ export default function Dashboard() {
   const tabClickHandler = (e) =>{
     switch(e.target.id){
       case 'Friends':
-        setState((prevState)=>({...prevState,specificTopic:""}))
+        setState((prevState)=>({...prevState,specificTopic:"",specificGroup:""}))
         setCurrentTab('Friends')
         break;
       case 'Groups':
+        setState((prevState)=>({...prevState,specificTopic:"",specificGroup:""}))
         setCurrentTab('Groups')
         break;
       case 'Profile':
+        setState((prevState)=>({...prevState,specificTopic:"",specificGroup:""}))
         setCurrentTab('Profile')
         break;
     }

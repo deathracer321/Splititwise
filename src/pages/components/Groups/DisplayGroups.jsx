@@ -1,10 +1,10 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
-
+import { useEffect, useState,useContext } from "react"
+import { AppContext } from "src/pages";
 
 
 export default function DisplayGroups(){
-
+    const { state, setState } = useContext(AppContext);
     const [groups,setGroups] = useState({})
 
     const getMyGroups = async ()=>{
@@ -15,6 +15,10 @@ export default function DisplayGroups(){
         setGroups(usersGroupsData.data)
     }
 
+    const handleSpecificGroup = (group) => {
+        setState((prevState) => ({ ...prevState, specificGroup: group }));
+      };
+
     useEffect(()=>{
        getMyGroups()
     },[])
@@ -23,7 +27,7 @@ export default function DisplayGroups(){
     Here we display all the groups that you are in:
     <ul>
     {groups?.userGroups?.map((group,ind)=>{
-        return <li key={ind}>{group}</li>
+        return <li key={ind}><button onClick={()=>handleSpecificGroup(group)}>{group}</button></li>
     })}
     </ul>
     </>
