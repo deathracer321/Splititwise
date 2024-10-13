@@ -3,7 +3,7 @@ import AddFriendToGroup from './AddFriendToGroup'
 import axios from "axios";
 import AddGroupExpense from './AddGroupExpense'
 import EachExpense from "../Groups/EachGroupExpense";
-
+import TotalSettlements from './TotalSettlements'
 export default function SpecificGroup({ topicName }) {
     const [groupData, setGroupData] = useState({});
 
@@ -36,18 +36,14 @@ export default function SpecificGroup({ topicName }) {
 
     return (
         <>
-            {/* <AddExpense expenseWith={topicName} onAddExpense={handleNewExpense} />
-            <br/>
-            <br/>
-            <div style={{ border: "5px solid brown" }}>
-                <p>Below you see all expenses with: {topicName}</p>
-                <EachExpense topicName={topicName} expensesData={expensesData} />
-            </div> */}
-
-            Add your {topicName} Group Expenses here
+            <h1>
+                 {topicName} 
+                </h1>
             
+            <TotalSettlements groupData={groupData}/>
+
             <div>
-                <AddFriendToGroup groupName={topicName}/>
+                <AddFriendToGroup groupName={topicName} fetchAllExpenses={fetchAllExpenses}/>
             </div>
 
             <div>

@@ -1,3 +1,3 @@
 export function floorToTwoDecimal(num) {
-    return Math.floor(Number(num) * 100) / 100;
+    return (Math.floor(Number(num) * 100) / 100) || "N/A";
 }
