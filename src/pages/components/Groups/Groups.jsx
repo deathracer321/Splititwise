@@ -6,6 +6,7 @@ import SpecificGroup from "./SpecificGroup";
 
 export default function Groups(){
     const { state, setState } = useContext(AppContext);
+    const [groups,setGroups] = useState({})
 
     const [groupName,setGroupName] = useState('')
 
@@ -22,10 +23,19 @@ export default function Groups(){
             alert(response.data.message)
         }
         setGroupName("")
+        getMyGroups()
     }
 
     const newGroupNameHandler = (e) =>{
         setGroupName(e.target.value)
+    }
+
+    const getMyGroups = async ()=>{
+        const usersGroupsData = await axios.post('/api/groups/getMyGroups',{
+            userName : sessionStorage.getItem("userName"),
+            password : sessionStorage.getItem("password")
+        })
+        setGroups(usersGroupsData.data)
     }
 
 
@@ -50,7 +60,7 @@ export default function Groups(){
           <br/>
           <br/>
           <h1>We list your groups here</h1>
-          <DisplayGroups/>
+          <DisplayGroups getMyGroups={getMyGroups} groups={groups}/>
           </>
       )
       }
