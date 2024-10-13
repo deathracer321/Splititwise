@@ -40,7 +40,11 @@ export default async function handler(req, res) {
             res
             .status(200)
             .json({ message: "Request Can be sent only once" });
-          }else{
+          }else if(requestedUserData.friends.includes(myUsername)){
+            res
+            .status(200)
+            .json({ message: `You are already friend with ${requestedUsername}` });
+          } else{
               // Add the myUsername to the friendReqs array
               requestedUserData.friendReqs.push(myUsername);
               if(!myUserData.friends){
