@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import EachExpense from "../components/EachExpense";
 import AddExpense from './AddExpense';
 import axios from "axios";
+import TotalSettlements from "./Friends/TotalSettlements";
 
 export default function SpecificTopic({ topicName }) {
     const [expensesData, setExpensesData] = useState({});
@@ -34,6 +35,7 @@ export default function SpecificTopic({ topicName }) {
 
     return (
         <>
+            <TotalSettlements expenses={expensesData} expenseWith={topicName}/>
             <AddExpense expenseWith={topicName} onAddExpense={handleNewExpense} />
             <br/>
             <br/>
