@@ -22,3 +22,13 @@ when a user is added in a group it is not immediately reflecting in other compon
 
 
     when displaying group name just display group name instead of prefixing with admin_
+
+    add delete button for each expense
+
+    add payment received for each group
+
+    add total settlements for friend to firend 
+
+    start css_ing
+
+    password for many api needs to be utilised

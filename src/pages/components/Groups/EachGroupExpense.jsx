@@ -1,13 +1,26 @@
 
+import axios from 'axios';
 import {floorToTwoDecimal} from '../../components/utils'
 
-export default function EachExpense({ groupMembers = [], groupData = [] }) {
+export default function EachExpense({ groupMembers = [], groupData = [] ,fetchAllExpenses ,groupName}) {
 
   const expensesData = groupData.expenses;
   const expenseStyle = {
     border: "1px solid black",
     borderCollapse: "collapse",
   };
+
+  const handleDeleteExpense = async (expenseID) =>{
+    let response = await axios.post('/api/groups/deleteOneExpense',{
+            userName: sessionStorage.getItem('userName'),
+            password: sessionStorage.getItem('password'),
+            groupName: groupName,
+            expenseID: expenseID
+    })
+    alert(response.data.message);
+    fetchAllExpenses()
+
+  }
 
   return (
     <div style={{ border: "2px solid black" }}>
@@ -32,6 +45,7 @@ export default function EachExpense({ groupMembers = [], groupData = [] }) {
                     minute: "2-digit",
                     hour12: true,
                   })}
+                  <button onClick={()=>handleDeleteExpense(eachItem.expenseID)}>Delete</button>
                 </td>
                 <td style={expenseStyle}>{eachItem.expenseTitle}</td>
                 <td style={expenseStyle}>{eachItem.expensePaidBy}</td>

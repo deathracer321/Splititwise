@@ -51,8 +51,7 @@ export default function SpecificGroup({ topicName }) {
             </div>
 
             <div>
-
-                <EachExpense groupMembers={groupData.members} groupData={groupData}/>
+                <EachExpense groupMembers={groupData.members} groupData={groupData} fetchAllExpenses={fetchAllExpenses} groupName={topicName}/>
             </div>
             
         </>
