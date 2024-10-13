@@ -1,3 +1,6 @@
+
+import {floorToTwoDecimal} from '../../components/utils'
+
 export default function EachExpense({ groupMembers = [], expensesData = [] }) {
   const expenseStyle = {
     border: "1px solid black",
@@ -43,7 +46,7 @@ export default function EachExpense({ groupMembers = [], expensesData = [] }) {
                       {groupMembers.map((member) => (
                         <div key={member}>
                           {member}:{" "}
-                          {eachItem?.unEqualSplit[member] || "N/A"}
+                          {floorToTwoDecimal(eachItem?.unEqualSplit?.[member] || "N/A")}
                         </div>
                       ))}
                     </div>
@@ -61,7 +64,7 @@ export default function EachExpense({ groupMembers = [], expensesData = [] }) {
                                   : "red",
                             }}
                           >
-                            {eachItem?.unEqualSplit[member] || "N/A"}
+                            {floorToTwoDecimal(eachItem?.unEqualSplit?.[member]) || "N/A"}
                           </span>
                         </div>
                       ))}

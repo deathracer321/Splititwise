@@ -60,7 +60,7 @@ export default function SpecificGroup({ topicName }) {
 
             <div>
 
-                <EachExpense topicName={topicName} expensesData={groupData.expenses}/>
+                <EachExpense groupMembers={groupData.members} expensesData={groupData.expenses}/>
             </div>
             
         </>

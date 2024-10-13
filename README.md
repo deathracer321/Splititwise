@@ -9,3 +9,6 @@ todo in friend expense page:
 bugs:
 when already a friend is added, it is allowing me to add friend again
 
+
+when split is added 3.3333333333
+
