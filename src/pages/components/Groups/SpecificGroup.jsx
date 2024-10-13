@@ -29,13 +29,9 @@ export default function SpecificGroup({ topicName }) {
             expense: newExpense,
             groupName: topicName
         });
-        if (response.data.message === "Expense Created Successfully") {
-            // Fetch expenses again to reflect the new addition
-            fetchAllExpenses();
-            alert("Expense added successfully");
-        } else {
-            alert(response.data.message);
-        }
+            
+        alert(response.data.message);
+        fetchAllExpenses();
     };
 
     return (
@@ -60,7 +56,7 @@ export default function SpecificGroup({ topicName }) {
 
             <div>
 
-                <EachExpense groupMembers={groupData.members} expensesData={groupData.expenses}/>
+                <EachExpense groupMembers={groupData.members} groupData={groupData}/>
             </div>
             
         </>

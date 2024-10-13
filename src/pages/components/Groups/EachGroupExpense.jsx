@@ -1,7 +1,9 @@
 
 import {floorToTwoDecimal} from '../../components/utils'
 
-export default function EachExpense({ groupMembers = [], expensesData = [] }) {
+export default function EachExpense({ groupMembers = [], groupData = [] }) {
+
+  const expensesData = groupData.expenses;
   const expenseStyle = {
     border: "1px solid black",
     borderCollapse: "collapse",
