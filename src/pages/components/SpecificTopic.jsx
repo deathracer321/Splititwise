@@ -5,7 +5,7 @@ import axios from "axios";
 import TotalSettlements from "./Friends/TotalSettlements";
 
 export default function SpecificTopic({ topicName }) {
-    const [expensesData, setExpensesData] = useState({});
+    const [expensesData, setExpensesData] = useState([]);
 
     // Fetch all expenses on mount
     const fetchAllExpenses = async () => {

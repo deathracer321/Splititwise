@@ -1,5 +1,5 @@
 import {floorToTwoDecimal} from '../utils'
-export default function TotalSettlements({expenses, expenseWith}){
+export default function TotalSettlements({expenses =[], expenseWith}){
 
     const userName = sessionStorage.getItem('userName')
     const password = sessionStorage.getItem('password')
@@ -7,7 +7,7 @@ export default function TotalSettlements({expenses, expenseWith}){
     const settlementWithEachPerson = (withWhom) =>{
 // this function iterates through all the expenses in this group and return the final value with the member passed
         let withWhomSettlemet = 0;
-        expenses?.map((eachExpense)=>{
+        expenses?.forEach((eachExpense)=>{
             let paidBy = eachExpense?.expensePaidBy;
             let withWhomShare = Number(eachExpense.unEqualSplit?.[withWhom]) || 0
             let myshare = Number(eachExpense.unEqualSplit?.[userName])
