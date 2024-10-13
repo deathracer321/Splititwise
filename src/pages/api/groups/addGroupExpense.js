@@ -66,7 +66,7 @@ export default async function handler(req, res) {
       } else {
         // If there are existing expenses, append the new expense to the array
         const existingExpenses = expenseSnapshot.val();
-        const updatedExpenses = [...existingExpenses, expenseData];
+        const updatedExpenses = [expenseData,...existingExpenses];
         await set(expenseRef, updatedExpenses); // Use `set` to overwrite with the updated array
         res.status(200).json({ message: "Expense added successfully!" });
       }
