@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../index";
+import { AppContext } from "../_app";
 export default function AddExpense({ expenseWith, onAddExpense }) {
 
   const {credentials,setCredentials} = useContext(AppContext)

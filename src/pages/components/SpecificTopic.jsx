@@ -3,7 +3,7 @@ import EachExpense from "../components/EachExpense";
 import AddExpense from './AddExpense';
 import axios from "axios";
 import TotalSettlements from "./Friends/TotalSettlements";
-import { AppContext } from "..";
+import { AppContext } from "../_app";
 
 export default function SpecificTopic({ topicName }) {
     const [expensesData, setExpensesData] = useState([]);

@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import Friends from './Friends/Friends';
 import Groups from './Groups/Groups';
 import Profile from './Profile';
-import { AppContext } from "..";
+import { AppContext } from "../_app";
 
 export default function Dashboard() {
   const { state, setState, credentials, setCredentials} = useContext(AppContext);
@@ -60,7 +60,7 @@ export default function Dashboard() {
   // Ensure we only check cred on the client side
   useEffect(() => {
     setIsClient(true); // We're now on the client side
-    if (isClient && !userName) {
+    if (isClient && !sessionStorage.getItem('userName')) {
       router.push("./Login");
     }
   }, [isClient, router]);

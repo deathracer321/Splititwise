@@ -4,7 +4,7 @@ import axios from "axios";
 import AddGroupExpense from './AddGroupExpense'
 import EachExpense from "../Groups/EachGroupExpense";
 import TotalSettlements from './TotalSettlements'
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app";
 export default function SpecificGroup({ topicName }) {
     const [groupData, setGroupData] = useState({});
     const {credentials } = useContext(AppContext);

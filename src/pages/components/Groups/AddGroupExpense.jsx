@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app";
 
 export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
   const {credentials} = useContext(AppContext)

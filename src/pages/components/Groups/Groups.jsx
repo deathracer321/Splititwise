@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState, useContext } from "react";
 import DisplayGroups from './DisplayGroups';
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app";
 import SpecificGroup from "./SpecificGroup";
 
 export default function Groups(){

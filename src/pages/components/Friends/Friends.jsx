@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import FriendRequests from "./FriendRequests";
 import SearchFriend from "./SearchFriend";
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app";
 import SpecificTopic from "../SpecificTopic";
 export default function Friends() {
   const { state, setState } = useContext(AppContext);

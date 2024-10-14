@@ -1,18 +1,18 @@
 import { useState,useEffect} from "react";
 import axios from 'axios';
 import { useRouter } from "next/router";
-export default function SignUp() {
-
+export default function Login() {
 
   const [userName,setUsername] = useState('');
   const [password,setPassword] =  useState('')
   const router = useRouter();
 
-  useEffect(()=>{
-    if(sessionStorage.getItem("userName")){
-      router.push("./")
+  useEffect(() => {
+    if (sessionStorage.getItem("userName")) {
+      router.replace("./"); // Use replace to avoid adding extra entries in history
     }
-  },[router])
+  }, []); // Remove router as dependency
+  
 
    const handleSubmit = async (e:any) =>{
     e.preventDefault();
@@ -51,10 +51,10 @@ export default function SignUp() {
         <form onSubmit={handleSubmit}>
         <br/>
         <label htmlFor="userName">Username</label>
-        <input id="userName" type="text" value={userName} onChange={handleChange}/>
+        <input id="userName" type="text" value={userName} onChange={handleChange} autoComplete="username"/>
         <br/>
         <label htmlFor="password">Password</label>
-        <input id="password" type="password" value={password} onChange={handleChange}/>
+        <input id="password" type="password" value={password} onChange={handleChange}  autoComplete="current-password"/>
         <button type="submit">Login</button>
         </form>
 

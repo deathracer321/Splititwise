@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState ,useContext, useEffect} from "react";
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app.jsx";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
 export default function SearchFriend(){
     const [searchString,setSearchString] = useState('');

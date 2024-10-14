@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext } from "react";
-import { AppContext } from "..";
+import { AppContext } from "../_app";
 
 export default function EachExpense({ topicName, expensesData = [],fetchAllExpenses }) {
   const expenseStyle = {

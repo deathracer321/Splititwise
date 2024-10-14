@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import floorToTwoDecimal from '../utils'
-import { AppContext } from 'src/pages';
+import { AppContext } from 'src/pages/_app';
 export default function TotalSettlements({groupData}){
 
     const expenses = groupData?.expenses || [];

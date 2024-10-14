@@ -2,7 +2,7 @@
 import axios from 'axios';
 import floorToTwoDecimal from '../../components/utils'
 import { useContext } from 'react';
-import { AppContext } from 'src/pages';
+import { AppContext } from 'src/pages/_app';
 
 export default function EachExpense({ groupMembers = [], groupData = [] ,fetchAllExpenses ,groupName}) {
 
