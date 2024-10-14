@@ -5,7 +5,8 @@ import { AppContext } from "src/pages";
 import SpecificGroup from "./SpecificGroup";
 
 export default function Groups(){
-    const { state, setState } = useContext(AppContext);
+    const { state, setState, credentials } = useContext(AppContext);
+    const {userName,password} = credentials;
     const [groups,setGroups] = useState({})
 
     const [groupName,setGroupName] = useState('')
@@ -13,8 +14,8 @@ export default function Groups(){
     const createNewGroupHandler = async (e) =>{
         e.preventDefault();
         const response  = await axios.post('/api/groups/createGroup',{
-            userName : sessionStorage.getItem('userName'),
-            password : sessionStorage.getItem('password'),
+            userName : userName,
+            password : password,
             groupName : groupName
         })
         if(response.data.message==="Group created successfully!"){
@@ -32,8 +33,8 @@ export default function Groups(){
 
     const getMyGroups = async ()=>{
         const usersGroupsData = await axios.post('/api/groups/getMyGroups',{
-            userName : sessionStorage.getItem("userName"),
-            password : sessionStorage.getItem("password")
+            userName : userName,
+            password : password
         })
         setGroups(usersGroupsData.data)
     }

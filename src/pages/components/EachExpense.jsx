@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useContext } from "react";
+import { AppContext } from "..";
 
 export default function EachExpense({ topicName, expensesData = [],fetchAllExpenses }) {
   const expenseStyle = {
@@ -6,10 +8,13 @@ export default function EachExpense({ topicName, expensesData = [],fetchAllExpen
     borderCollapse: "collapse",
   };
 
+  const {credentials} = useContext(AppContext);
+  const {userName,password} = credentials
+
   const handleDeleteExpense = async (expenseID) =>{
     let response = await axios.post('/api/deleteOneExpense',{
-            userName: sessionStorage.getItem('userName'),
-            password: sessionStorage.getItem('password'),
+            userName: userName,
+            password: password,
             expenseWith: topicName,
             expenseID: expenseID
     })
@@ -48,7 +53,7 @@ export default function EachExpense({ topicName, expensesData = [],fetchAllExpen
               </td>
               <td style={expenseStyle}>
                 {eachItem.expensePaidBy ===
-                sessionStorage.getItem("userName")
+                userName
                   ? "Yes"
                   : "No"}
               </td>
@@ -64,7 +69,7 @@ export default function EachExpense({ topicName, expensesData = [],fetchAllExpen
                   <div style={{color: "red"}}>
                     your share : 
                   {eachItem?.unEqualSplit[
-                    sessionStorage.getItem("userName")
+                    userName
                   ]}
                   </div>
                 ) : (
@@ -74,14 +79,14 @@ export default function EachExpense({ topicName, expensesData = [],fetchAllExpen
                       style={{
                         color:
                           eachItem.expensePaidBy ===
-                          sessionStorage.getItem("userName")
+                          userName
                             ? "green"
                             : "red",
                       }}
                     >
                       {
                         eachItem?.unEqualSplit[
-                          sessionStorage.getItem("userName")
+                          userName
                         ]
                       }
                     </div>
@@ -91,7 +96,7 @@ export default function EachExpense({ topicName, expensesData = [],fetchAllExpen
                       style={{
                         color:
                           eachItem.expensePaidBy ===
-                          sessionStorage.getItem("userName")
+                          userName
                             ? "red"
                             : "green",
                       }}

@@ -10,6 +10,8 @@ export default function AddFriendToGroup({ groupName, fetchAllExpenses }) {
     setSearchString(e.target.value);
     setShowAddFriend(false);
   };
+  const {credentials} = useContext(AppContext)
+  const {userName,password} = credentials;
 
   const handleSearch = async (e) => {
     if (searchString) {
@@ -24,13 +26,11 @@ export default function AddFriendToGroup({ groupName, fetchAllExpenses }) {
   };
 
   const sendFriendRequestHandler = async () => {
-    const userName = sessionStorage.getItem("userName");
-    const password = sessionStorage.getItem("password");
-    if (searchString !== sessionStorage.getItem("userName")) {
+    if (searchString !== userName) {
       let request = await axios.post("./api/groups/addFriendToGroup", {
         requestedUsername: searchString,
-        myUsername: sessionStorage.getItem("userName"),
-        password: sessionStorage.getItem("password"),
+        myUsername: userName,
+        password: password,
         groupName: groupName,
       });
       if (request.data.message === "Added friend to Group Successfully") {
@@ -71,7 +71,7 @@ export default function AddFriendToGroup({ groupName, fetchAllExpenses }) {
           style={{ backgroundColor: "green" }}
           onClick={sendFriendRequestHandler}
         >
-          Add {searchString} to {groupName}?
+          Add {searchString} to {groupName.split('_')[1]}?
         </button>
       )}
     </>

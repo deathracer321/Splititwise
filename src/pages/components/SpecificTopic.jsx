@@ -1,17 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import EachExpense from "../components/EachExpense";
 import AddExpense from './AddExpense';
 import axios from "axios";
 import TotalSettlements from "./Friends/TotalSettlements";
+import { AppContext } from "..";
 
 export default function SpecificTopic({ topicName }) {
     const [expensesData, setExpensesData] = useState([]);
+    const {credentials} = useContext(AppContext)
+    const {userName,password} = credentials
+
 
     // Fetch all expenses on mount
     const fetchAllExpenses = async () => {
         const response = await axios.post('/api/getFriendExpenses', {
-            userName: sessionStorage.getItem('userName'),
-            password: sessionStorage.getItem('password'),
+            userName: userName,
+            password: password,
             expenseWith: topicName
         });
         setExpensesData(response.data.data);

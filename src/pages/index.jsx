@@ -8,13 +8,22 @@ export default function Home() {
   
   const [state,setState] = useState({})
   
+  const [credentials,setCredentials] = useState({
+    userName : '',
+    password : ''
+  })
+
   useEffect(()=>{
     setState(JSON.parse(localStorage.getItem('userInfo')) || {})
+    setCredentials({
+      userName : sessionStorage.getItem('userName'),
+      password : sessionStorage.getItem('password'),
+    })
   },[])
 
   return (
     <main>
-      <AppContext.Provider value={{state,setState}}>
+      <AppContext.Provider value={{state,setState,credentials,setCredentials}}>
         <Dashboard/>
       </AppContext.Provider>
     </main>

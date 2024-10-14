@@ -4,13 +4,10 @@ import { AppContext } from "src/pages";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
 
 export default function FriendRequests() {
-  const { state, setState } = useContext(AppContext);
-  
+  const { state, setState, credentials } = useContext(AppContext);
+  const {userName, password} = credentials 
   
   const acceptFriendRequestHandler = async (whomToAcceptOrReject) => {
-    const userName = sessionStorage.getItem("userName");
-    const password = sessionStorage.getItem("password");
-
     try {
       // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {
@@ -36,8 +33,6 @@ export default function FriendRequests() {
   };
 
   const rejectFriendRequestHandler = async (whomToAcceptOrReject) => {
-    const userName = sessionStorage.getItem("userName");
-    const password = sessionStorage.getItem("password");
     try {
       // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {

@@ -6,7 +6,8 @@ import Profile from './Profile';
 import { AppContext } from "..";
 
 export default function Dashboard() {
-  const { state, setState } = useContext(AppContext);
+  const { state, setState, credentials, setCredentials} = useContext(AppContext);
+  const {userName,password} = credentials
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState('Friends');
   const [isClient, setIsClient] = useState(false); // Check if we're on the client side
@@ -14,9 +15,13 @@ export default function Dashboard() {
   // Handle logout
   const handleLogout = () => {
     if (isClient) {
-      sessionStorage.removeItem("userName");
-      sessionStorage.removeItem("password");
       localStorage.removeItem("userInfo");
+      sessionStorage.removeItem('userName')
+      sessionStorage.removeItem('password')
+      setCredentials({
+        userName : '',
+        password : ''
+      })
       router.push("./Login");
     }
   };
@@ -52,10 +57,10 @@ export default function Dashboard() {
     }
   };
 
-  // Ensure we only check sessionStorage on the client side
+  // Ensure we only check cred on the client side
   useEffect(() => {
     setIsClient(true); // We're now on the client side
-    if (isClient && !sessionStorage.getItem("userName")) {
+    if (isClient && !userName) {
       router.push("./Login");
     }
   }, [isClient, router]);
@@ -65,7 +70,7 @@ export default function Dashboard() {
       <div className="dashboardMainView">
         {isClient && (
           <button onClick={handleLogout} className="Logout">
-            Logout as {sessionStorage?.getItem('userName')}
+            Logout as {isClient && userName}
           </button>
         )}
         {returnCurrentComponent(currentTab)}

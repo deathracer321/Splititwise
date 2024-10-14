@@ -1,6 +1,8 @@
 
 import axios from 'axios';
-import {floorToTwoDecimal} from '../../components/utils'
+import floorToTwoDecimal from '../../components/utils'
+import { useContext } from 'react';
+import { AppContext } from 'src/pages';
 
 export default function EachExpense({ groupMembers = [], groupData = [] ,fetchAllExpenses ,groupName}) {
 
@@ -10,10 +12,13 @@ export default function EachExpense({ groupMembers = [], groupData = [] ,fetchAl
     borderCollapse: "collapse",
   };
 
+  const {credentials} = useContext(AppContext)
+  const {userName,password} = credentials;
+
   const handleDeleteExpense = async (expenseID) =>{
     let response = await axios.post('/api/groups/deleteOneExpense',{
-            userName: sessionStorage.getItem('userName'),
-            password: sessionStorage.getItem('password'),
+            userName: userName,
+            password: password,
             groupName: groupName,
             expenseID: expenseID
     })

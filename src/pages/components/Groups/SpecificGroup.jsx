@@ -1,17 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import AddFriendToGroup from './AddFriendToGroup'
 import axios from "axios";
 import AddGroupExpense from './AddGroupExpense'
 import EachExpense from "../Groups/EachGroupExpense";
 import TotalSettlements from './TotalSettlements'
+import { AppContext } from "src/pages";
 export default function SpecificGroup({ topicName }) {
     const [groupData, setGroupData] = useState({});
+    const {credentials } = useContext(AppContext);
+    const {userName,password} = credentials;
 
     // Fetch all expenses on mount
     const fetchAllExpenses = async () => {
         const response = await axios.post('/api/groups/getGroupData', {
-            userName: sessionStorage.getItem('userName'),
-            password: sessionStorage.getItem('password'),
+            userName: userName,
+            password: password,
             groupName: topicName
         });
         setGroupData(response.data.groupData);
@@ -24,8 +27,8 @@ export default function SpecificGroup({ topicName }) {
     // Function to handle adding a new expense and updating the expenses data
     const handleNewExpense = async (newExpense) => {
         const response = await axios.post('/api/groups/addGroupExpense', {
-            userName: sessionStorage.getItem('userName'),
-            password: sessionStorage.getItem('password'),
+            userName: userName,
+            password: password,
             expense: newExpense,
             groupName: topicName
         });

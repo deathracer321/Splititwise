@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AppContext } from "src/pages";
 
 export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
-  const userName = sessionStorage.getItem("userName");
-
+  const {credentials} = useContext(AppContext)
+  const {userName,password} = credentials;
   const initialState = {
     desc: "",
     amount: "",
