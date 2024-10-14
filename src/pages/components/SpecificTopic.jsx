@@ -41,7 +41,7 @@ export default function SpecificTopic({ topicName }) {
             <br/>
             <div style={{ border: "5px solid brown" }}>
                 <p>Below you see all expenses with: {topicName}</p>
-                <EachExpense topicName={topicName} expensesData={expensesData} />
+                <EachExpense topicName={topicName} expensesData={expensesData} fetchAllExpenses={fetchAllExpenses}/>
             </div>
         </>
     );

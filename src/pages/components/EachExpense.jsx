@@ -1,8 +1,22 @@
-export default function EachExpense({ topicName, expensesData = [] }) {
+import axios from "axios";
+
+export default function EachExpense({ topicName, expensesData = [],fetchAllExpenses }) {
   const expenseStyle = {
     border: "1px solid black",
     borderCollapse: "collapse",
   };
+
+  const handleDeleteExpense = async (expenseID) =>{
+    let response = await axios.post('/api/deleteOneExpense',{
+            userName: sessionStorage.getItem('userName'),
+            password: sessionStorage.getItem('password'),
+            expenseWith: topicName,
+            expenseID: expenseID
+    })
+    alert(response.data.message);
+    fetchAllExpenses()
+  }
+
   return (
     <div style={{ border: "2px solid black" }}>
       <table style={{ border: "1px solid black", borderCollapse: "collapse" }}>
@@ -27,6 +41,7 @@ export default function EachExpense({ topicName, expensesData = [] }) {
                     hour12: true, // This makes it 24-hour format, set to true for 12-hour format
                   }
                 )}
+                <button onClick={()=>handleDeleteExpense(eachItem.expenseID)}>Delete</button>
               </td>
               <td style={expenseStyle}>
                 {eachItem.expenseTitle}
