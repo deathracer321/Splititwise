@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     const { userName, password, expenseWith } = req.body;
 
     try {
-      console.log(userName,"_",expenseWith)
       const userTransactionRef = ref(database, 'friendToFriendTransactions/' + userName + "_" + expenseWith);
       const anotherUserTransactionRef = ref(database, 'friendToFriendTransactions/' + expenseWith + "_" + userName);
       // Reference to the user in the Realtime Database
@@ -19,9 +18,7 @@ export default async function handler(req, res) {
       const userData = snapshot.val();
 
       // Validate the password
-      if (userData.password === password) {
-        console.log("Authenticated")
-      } else {
+      if (userData.password !== password) {
         res.status(200).json({ message: 'Incorrect username or password' });
         return ""
       }
@@ -42,7 +39,6 @@ export default async function handler(req, res) {
         res.status(200).json({ message: "Something fishy? :)" });
       }
     } catch (error) {
-      console.error('Error:', error);
       res.status(500).json({ error: 'Something went wrong', details: error.message });
     }
   } else {

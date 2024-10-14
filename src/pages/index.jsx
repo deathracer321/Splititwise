@@ -1,24 +1,10 @@
-import Dashboard from "./components/Dashboard"
-import { createContext, useEffect, useState } from "react";
-
-export const AppContext = createContext();
+// pages/index.jsx
+import Dashboard from "../pages/components/Dashboard";
 
 export default function Home() {
-
-  
-  const [state,setState] = useState({})
-  
-  useEffect(()=>{
-    setState(JSON.parse(localStorage.getItem('userInfo')) || {})
-  },[])
-
   return (
     <main>
-      <AppContext.Provider value={{state,setState}}>
-        <Dashboard/>
-      </AppContext.Provider>
+      <Dashboard />
     </main>
   );
 }
-
-

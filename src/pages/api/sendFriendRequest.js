@@ -36,11 +36,11 @@ export default async function handler(req, res) {
           if (!requestedUserData.friendReqs) {
             requestedUserData.friendReqs = [];
           }
-          if(requestedUserData.friendReqs.includes(myUsername)){
+          if(requestedUserData?.friendReqs?.includes(myUsername)){
             res
             .status(200)
             .json({ message: "Request Can be sent only once" });
-          }else if(requestedUserData.friends.includes(myUsername)){
+          }else if(requestedUserData?.friends?.includes(myUsername)){
             res
             .status(200)
             .json({ message: `You are already friend with ${requestedUsername}` });
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
         }
       }
     } catch (error) {
-      res.status(500).json({ error: "Failed to log in" });
+      res.status(500).json({ error: "Failed to log in" ,message: error.message});
     }
   }
 }

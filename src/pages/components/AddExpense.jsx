@@ -1,8 +1,10 @@
-import { useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../_app";
 export default function AddExpense({ expenseWith, onAddExpense }) {
-  const userName = sessionStorage.getItem("userName");
-  const password = sessionStorage.getItem("password");
+
+  const {credentials,setCredentials} = useContext(AppContext)
+
+  const {userName,password} = credentials
 
   const initialState = {
     desc: "",
@@ -127,7 +129,7 @@ export default function AddExpense({ expenseWith, onAddExpense }) {
               onChange={handleChange}
             />
             <br />
-            Friend's share:
+            Friends share:
             <input
               required={true}
               type="number"

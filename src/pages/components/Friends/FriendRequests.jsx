@@ -1,16 +1,13 @@
 import axios from "axios";
 import { useContext } from "react";
-import { AppContext } from "src/pages";
+import { AppContext } from "src/pages/_app.jsx";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
 
 export default function FriendRequests() {
-  const { state, setState } = useContext(AppContext);
-  
+  const { state, setState, credentials } = useContext(AppContext);
+  const {userName, password} = credentials 
   
   const acceptFriendRequestHandler = async (whomToAcceptOrReject) => {
-    const userName = sessionStorage.getItem("userName");
-    const password = sessionStorage.getItem("password");
-
     try {
       // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {
@@ -30,14 +27,11 @@ export default function FriendRequests() {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Error accepting friend request:", error);
       alert("An error occurred while accepting the friend request.");
     }
   };
 
   const rejectFriendRequestHandler = async (whomToAcceptOrReject) => {
-    const userName = sessionStorage.getItem("userName");
-    const password = sessionStorage.getItem("password");
     try {
       // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {
@@ -57,7 +51,6 @@ export default function FriendRequests() {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Error rejecting friend request:", error);
       alert("An error occurred while rejecting the friend request.");
     }
   };

@@ -1,8 +1,10 @@
-import {floorToTwoDecimal} from '../utils'
+import { useContext, useEffect } from 'react';
+import floorToTwoDecimal from '../utils'
+import { AppContext } from 'src/pages/_app';
 export default function TotalSettlements({expenses =[], expenseWith}){
 
-    const userName = sessionStorage.getItem('userName')
-    const password = sessionStorage.getItem('password')
+    const {credentials} = useContext(AppContext)
+    const {userName,password} = credentials;
 
     const settlementWithEachPerson = (withWhom) =>{
 // this function iterates through all the expenses in this group and return the final value with the member passed
