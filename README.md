@@ -36,3 +36,7 @@ when a user is added in a group it is not immediately reflecting in other compon
    ---------- password for many api needs to be utilised
 
    on first add expense(this is your first transaction with your friend) with friend is not getting rendered Done
+
+   -- npm run build fixes
+
+   wrong display of cumulative display charts other than admin of that group !!!! Done

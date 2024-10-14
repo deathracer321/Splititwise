@@ -31,7 +31,7 @@ export default function TotalSettlements({groupData}){
     return <div style={{border: "2px solid red"}}>
         <h2>Cumulative Settlemet charts:</h2>
     {groupData?.members?.map((member,ind)=>{
-        if(ind!==0)
+        if(member !== userName)
         return <p><b>{member}</b> {settlementWithEachPerson(member) > 0 ? "should give you" : "receives from you"}: {floorToTwoDecimal(settlementWithEachPerson(member))}</p>
     })}
     </div>

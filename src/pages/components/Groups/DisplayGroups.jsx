@@ -18,7 +18,7 @@ export default function DisplayGroups({getMyGroups,groups}){
     Here we display all the groups that you are in:
     <ul>
     {groups?.userGroups?.map((group,ind)=>{
-        return <li key={ind}><button onClick={()=>handleSpecificGroup(group)}>{group}</button></li>
+        return <li key={ind}><button onClick={()=>handleSpecificGroup(group)}>{group.split('_')[1]}</button></li>
     })}
     </ul>
     </>
