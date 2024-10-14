@@ -5,7 +5,6 @@ import { database } from "../../lib/firebase"; // Import the database
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { requestedUsername, myUsername, password } = req.body;
-    console.log(requestedUsername, myUsername, password)
     try {
       // Reference to the user in the Realtime Database
       const myUsernameRef = ref(database, "users/" + myUsername);

@@ -22,7 +22,6 @@ export default function TotalSettlements({groupData}){
                 // some other person paid it
                 withWhomSettlemet = withWhomSettlemet - myshare
             }
-            console.log(withWhomShare,withWhom)
         })
         
         return withWhomSettlemet

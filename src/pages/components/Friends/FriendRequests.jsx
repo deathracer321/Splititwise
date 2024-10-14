@@ -27,7 +27,6 @@ export default function FriendRequests() {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Error accepting friend request:", error);
       alert("An error occurred while accepting the friend request.");
     }
   };
@@ -52,7 +51,6 @@ export default function FriendRequests() {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Error rejecting friend request:", error);
       alert("An error occurred while rejecting the friend request.");
     }
   };
