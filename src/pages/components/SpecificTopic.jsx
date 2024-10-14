@@ -26,11 +26,11 @@ export default function SpecificTopic({ topicName }) {
         const response = await axios.post('/api/createExpense', newExpense);
         if (response.data.message === "Expense Created Successfully") {
             // Fetch expenses again to reflect the new addition
-            fetchAllExpenses();
             alert("Expense added successfully");
         } else {
             alert(response.data.message);
         }
+        fetchAllExpenses();
     };
 
     return (

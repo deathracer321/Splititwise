@@ -83,7 +83,7 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
 
   return (
     <div style={{ border: "2px solid black" }}>
-      <h3>Add your expense with {groupName} here:</h3>
+      <h3>Add your expense with {groupName.split("_")[1]} here:</h3>
       <br />
       <form onSubmit={handleAddExpense}>
         Description:{" "}
