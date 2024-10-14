@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import EachExpense from "../components/EachExpense";
 import AddExpense from './AddExpense';
 import axios from "axios";
+import TotalSettlements from "./Friends/TotalSettlements";
 
 export default function SpecificTopic({ topicName }) {
-    const [expensesData, setExpensesData] = useState({});
+    const [expensesData, setExpensesData] = useState([]);
 
     // Fetch all expenses on mount
     const fetchAllExpenses = async () => {
@@ -25,21 +26,22 @@ export default function SpecificTopic({ topicName }) {
         const response = await axios.post('/api/createExpense', newExpense);
         if (response.data.message === "Expense Created Successfully") {
             // Fetch expenses again to reflect the new addition
-            fetchAllExpenses();
             alert("Expense added successfully");
         } else {
             alert(response.data.message);
         }
+        fetchAllExpenses();
     };
 
     return (
         <>
+            <TotalSettlements expenses={expensesData} expenseWith={topicName}/>
             <AddExpense expenseWith={topicName} onAddExpense={handleNewExpense} />
             <br/>
             <br/>
             <div style={{ border: "5px solid brown" }}>
                 <p>Below you see all expenses with: {topicName}</p>
-                <EachExpense topicName={topicName} expensesData={expensesData} />
+                <EachExpense topicName={topicName} expensesData={expensesData} fetchAllExpenses={fetchAllExpenses}/>
             </div>
         </>
     );
