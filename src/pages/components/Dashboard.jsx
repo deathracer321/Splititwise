@@ -12,6 +12,14 @@ export default function Dashboard() {
   const [currentTab, setCurrentTab] = useState('Friends');
   const [isClient, setIsClient] = useState(false); // Check if we're on the client side
 
+
+  useEffect(()=>{
+    setCredentials({
+      userName : sessionStorage.getItem('userName'),
+      password : sessionStorage.getItem('password')
+    })
+  },[])
+
   // Handle logout
   const handleLogout = () => {
     if (isClient) {
