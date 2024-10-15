@@ -13,31 +13,32 @@ import {
   Link,
 } from "@chakra-ui/react";
 
-export default function Login() {
+export default function SignUp() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [enableSignUp, setEnableSignUp] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (sessionStorage.getItem("userName")) {
-      router.replace("./"); // Use replace to avoid adding extra entries in history
-    }
-  }, []); // Remove router as dependency
+    // Enable the Sign Up button only if the passwords match and are not empty
+    setEnableSignUp(
+      password !== "" && confirmPassword !== "" && password === confirmPassword
+    );
+  }, [password, confirmPassword]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      let data = await axios.post("./api/login", {
+      let data = await axios.post("./api/signup", {
         userName: userName,
         password: password,
       });
-      if (data.data.message === "Logged in successfully") {
-        sessionStorage.setItem("userName", userName);
-        sessionStorage.setItem("password", password);
-        localStorage.setItem("userInfo", JSON.stringify(data.data));
-        router.push("./");
-      } else {
-        alert(data.data.message);
+      alert(data.data.message);
+      if (data.data.message === "User created successfully") {
+        router.push("/Login");
+      } else if (data.data.message === "User already exists. Please log in.") {
+        router.push("/Login");
       }
     } catch (error) {
       alert(error);
@@ -49,6 +50,8 @@ export default function Login() {
       setUsername(event.target.value);
     } else if (event.target.id === "password") {
       setPassword(event.target.value);
+    } else if (event.target.id === "confirmPassword") {
+      setConfirmPassword(event.target.value);
     }
   };
 
@@ -63,7 +66,7 @@ export default function Login() {
       boxShadow="lg"
     >
       <Heading as="h2" size="lg" textAlign="center" mb="6">
-        Login
+        Signup
       </Heading>
       <form onSubmit={handleSubmit}>
         <VStack spacing="4">
@@ -73,7 +76,6 @@ export default function Login() {
               type="text"
               value={userName}
               onChange={handleChange}
-              autoComplete="username"
               focusBorderColor="blue.500"
             />
           </FormControl>
@@ -84,21 +86,34 @@ export default function Login() {
               type="password"
               value={password}
               onChange={handleChange}
-              autoComplete="current-password"
               focusBorderColor="blue.500"
             />
           </FormControl>
 
-          <Button type="submit" colorScheme="blue" width="full">
-            Login
+          <FormControl id="confirmPassword">
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              type="password"
+              value={confirmPassword}
+              onChange={handleChange}
+              focusBorderColor="blue.500"
+            />
+          </FormControl>
+
+          {!enableSignUp && (
+            <Text color="red.500">Passwords do not match</Text>
+          )}
+
+          <Button type="submit" colorScheme="blue" width="full" isDisabled={!enableSignUp}>
+            Signup
           </Button>
         </VStack>
       </form>
 
       <Text mt="4" textAlign="center">
-        Don&apos;t have an account?{" "}
-        <Link color="blue.500" onClick={() => router.push("/Register")}>
-          Signup
+        Already have an account?{" "}
+        <Link color="blue.500" onClick={() => router.push("/Login")}>
+          Login
         </Link>
       </Text>
     </Box>

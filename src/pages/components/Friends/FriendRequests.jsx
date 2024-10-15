@@ -1,28 +1,26 @@
-import axios from "axios";
 import { useContext } from "react";
-import { AppContext } from "src/pages/_app.jsx";
-import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo.js";
+import { Box, Button, VStack, Heading, ListItem, UnorderedList } from "@chakra-ui/react";
+import { AppContext } from "src/pages/_app";
+import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo";
+import { Text } from "@chakra-ui/react";
 
 export default function FriendRequests() {
   const { state, setState, credentials } = useContext(AppContext);
-  const {userName, password} = credentials 
-  
+  const { userName, password } = credentials;
+
   const acceptFriendRequestHandler = async (whomToAcceptOrReject) => {
     try {
-      // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {
         userName: userName,
         password: password,
         whomToAcceptOrReject: whomToAcceptOrReject,
-        action:"accept"
+        action: "accept"
       });
 
       if (response.data.message === "Friend request accepted") {
         alert(response.data.message);
-
-        // Fetch updated user info and update state
         const updatedUserInfo = await fetchAndSyncUserInfo(userName, password);
-        setState(updatedUserInfo); // Now update state after getting the new data
+        setState(updatedUserInfo);
       } else {
         alert(response.data.message);
       }
@@ -33,20 +31,17 @@ export default function FriendRequests() {
 
   const rejectFriendRequestHandler = async (whomToAcceptOrReject) => {
     try {
-      // Send friend request acceptance to the server
       const response = await axios.post("/api/acceptFriendReq", {
         userName: userName,
         password: password,
         whomToAcceptOrReject: whomToAcceptOrReject,
-        action:"reject"
+        action: "reject"
       });
 
       if (response.data.message === "Friend request rejected") {
         alert(response.data.message);
-
-        // Fetch updated user info and update state
         const updatedUserInfo = await fetchAndSyncUserInfo(userName, password);
-        setState(updatedUserInfo); // Now update state after getting the new data
+        setState(updatedUserInfo);
       } else {
         alert(response.data.message);
       }
@@ -55,25 +50,28 @@ export default function FriendRequests() {
     }
   };
 
-  // Avoid rendering until state is available
   if (!state?.userInfo?.friendReqs || state.userInfo.friendReqs.length === 0) {
-    return <p>No Friend requests you have! Enjoy...</p>;
+    return <Text>No Friend requests you have! Enjoy...</Text>;
   }
 
   return (
-    <>
-      <h1>We list your friend requests here</h1>
-      <ul>
+    <Box>
+      <Heading size="md">We list your friend requests here</Heading>
+      <UnorderedList mt={4}>
         {state.userInfo.friendReqs.map((friendReq, ind) => (
-          <li key={ind} style={{ border: "2px solid grey" }}>
-            <h4>{friendReq}</h4>
-            <button onClick={() => acceptFriendRequestHandler(friendReq)}>
-              Accept
-            </button>
-            <button onClick={() => rejectFriendRequestHandler(friendReq)}>Reject</button>
-          </li>
+          <ListItem key={ind} border="1px solid gray" borderRadius="md" p={4}>
+            <Heading size="sm" mb={2}>{friendReq}</Heading>
+            <VStack spacing={2}>
+              <Button colorScheme="green" onClick={() => acceptFriendRequestHandler(friendReq)}>
+                Accept
+              </Button>
+              <Button colorScheme="red" onClick={() => rejectFriendRequestHandler(friendReq)}>
+                Reject
+              </Button>
+            </VStack>
+          </ListItem>
         ))}
-      </ul>
-    </>
+      </UnorderedList>
+    </Box>
   );
 }

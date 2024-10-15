@@ -1,25 +1,34 @@
-import axios from "axios"
-import { useEffect, useState,useContext } from "react"
+import { useEffect, useContext } from "react";
+import { Box, Button, List, ListItem, Text } from "@chakra-ui/react";
 import { AppContext } from "src/pages/_app";
 
+export default function DisplayGroups({ getMyGroups, groups }) {
+  const { state, setState } = useContext(AppContext);
 
-export default function DisplayGroups({getMyGroups,groups}){
-    const { state, setState } = useContext(AppContext);
+  const handleSpecificGroup = (group) => {
+    setState((prevState) => ({ ...prevState, specificGroup: group }));
+  };
 
-    const handleSpecificGroup = (group) => {
-        setState((prevState) => ({ ...prevState, specificGroup: group }));
-      };
+  useEffect(() => {
+    getMyGroups();
+  }, []);
 
-    useEffect(()=>{
-       getMyGroups()
-    },[])
-
-    return <>
-    Here we display all the groups that you are in:
-    <ul>
-    {groups?.userGroups?.map((group,ind)=>{
-        return <li key={ind}><button onClick={()=>handleSpecificGroup(group)}>{group.split('_')[1]}</button></li>
-    })}
-    </ul>
-    </>
+  return (
+    <Box>
+      <List spacing={3}>
+        {groups?.userGroups?.map((group, ind) => (
+          <ListItem key={ind}>
+            <Button
+              onClick={() => handleSpecificGroup(group)}
+              variant="outline"
+              colorScheme="teal"
+              w="full"
+            >
+              {group.split('_')[1]}
+            </Button>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 }
