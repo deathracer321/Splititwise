@@ -4,7 +4,7 @@ import 'src/styles/globals.css';
 import 'src/styles/Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import { ChakraProvider } from '@chakra-ui/react'
 export const AppContext = createContext(null);
 
 export default function App({ Component, pageProps }) {
@@ -34,8 +34,11 @@ export default function App({ Component, pageProps }) {
   }
 
   return (
+<ChakraProvider>
+  
     <AppContext.Provider value={{ state, setState, credentials, setCredentials }}>
       <Component {...pageProps} />
     </AppContext.Provider>
+</ChakraProvider>
   );
 }
