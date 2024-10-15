@@ -1,39 +1,63 @@
-import { useContext, useEffect } from 'react';
-import floorToTwoDecimal from '../utils'
-import { AppContext } from 'src/pages/_app';
-export default function TotalSettlements({groupData}){
+import { useContext } from "react";
+import { Box, Text, VStack, Heading, Divider } from "@chakra-ui/react";
+import floorToTwoDecimal from "../utils";
+import { AppContext } from "src/pages/_app";
 
-    const expenses = groupData?.expenses || [];
-    const {credentials } = useContext(AppContext);
-    const {userName,password} = credentials;
+export default function TotalSettlements({ groupData }) {
+  const expenses = groupData?.expenses || [];
+  const { credentials } = useContext(AppContext);
+  const { userName } = credentials;
 
-    const settlementWithEachPerson = (withWhom) =>{
-// this function iterates through all the expenses in this group and return the final value with the member passed
-        let withWhomSettlemet = 0;
-        expenses?.map((eachExpense)=>{
-            let paidBy = eachExpense?.expensePaidBy;
-            let withWhomShare = Number(eachExpense.unEqualSplit?.[withWhom]) || 0
-            let myshare = Number(eachExpense.unEqualSplit?.[userName])
-            if(paidBy===userName){
-                //this user paid the expense
-                withWhomSettlemet = withWhomSettlemet + withWhomShare
-            }
-            if(paidBy===withWhom){
-                // some other person paid it
-                withWhomSettlemet = withWhomSettlemet - myshare
-            }
-        })
-        
-        return withWhomSettlemet
-    }
+  const settlementWithEachPerson = (withWhom) => {
+    let withWhomSettlement = 0;
+    expenses?.forEach((eachExpense) => {
+      let paidBy = eachExpense?.expensePaidBy;
+      let withWhomShare = Number(eachExpense.unEqualSplit?.[withWhom]) || 0;
+      let myShare = Number(eachExpense.unEqualSplit?.[userName]);
+      if (paidBy === userName) {
+        withWhomSettlement += withWhomShare;
+      }
+      if (paidBy === withWhom) {
+        withWhomSettlement -= myShare;
+      }
+    });
+    return withWhomSettlement;
+  };
 
-
-
-    return <div style={{border: "2px solid red"}}>
-        <h2>Cumulative Settlemet charts:</h2>
-    {groupData?.members?.map((member,ind)=>{
-        if(member !== userName)
-        return <p key={ind}><b>{member}</b> {settlementWithEachPerson(member) > 0 ? "should give you" : "receives from you"}: {floorToTwoDecimal(settlementWithEachPerson(member))}</p>
-    })}
-    </div>
+  return (
+    <Box
+      border="2px solid red"
+      borderRadius="lg"
+      p={4}
+      w={{ base: "100%", md: "80%" }}
+      maxW="800px"
+      mx="auto"
+      bg="gray.50"
+      boxShadow="md"
+    >
+      <Heading as="h2" size="lg" mb={4}>
+        Cumulative Settlement Charts
+      </Heading>
+      <Divider mb={4} />
+      <VStack spacing={4} align="stretch">
+        {groupData?.members?.map((member, ind) => {
+          if (member !== userName) {
+            const settlement = settlementWithEachPerson(member);
+            return (
+              <Box key={ind} p={4} borderWidth="1px" borderRadius="md" bg="white" boxShadow="sm">
+                <Text fontSize="lg" fontWeight="bold">
+                  {member}
+                </Text>
+                <Text color={settlement > 0 ? "green.500" : "red.500"}>
+                  {settlement > 0
+                    ? `should give you: ${floorToTwoDecimal(settlement)}`
+                    : `receives from you: ${floorToTwoDecimal(settlement)}`}
+                </Text>
+              </Box>
+            );
+          }
+        })}
+      </VStack>
+    </Box>
+  );
 }

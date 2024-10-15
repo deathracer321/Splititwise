@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
+import { Box, Input, Select, Button, Text } from "@chakra-ui/react";
 import { AppContext } from "src/pages/_app";
 
 export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
-  const {credentials} = useContext(AppContext)
-  const {userName,password} = credentials;
+  const { credentials } = useContext(AppContext);
+  const { userName } = credentials;
+
   const initialState = {
     desc: "",
     amount: "",
@@ -14,7 +16,6 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
 
   const [expense, setExpense] = useState(initialState);
 
-  // Function to update unEqualSplit when isEqualSplit is true
   const handleEqualSplit = (totalAmount) => {
     const equalAmount = totalAmount / expenseWith.length;
     const updatedUnEqualSplit = {};
@@ -24,7 +25,6 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
     return updatedUnEqualSplit;
   };
 
-  // Update unEqualSplit when isEqualSplit changes to true
   useEffect(() => {
     if (expense.isEqualSplit && expense.amount) {
       const updatedSplit = handleEqualSplit(expense.amount);
@@ -33,7 +33,7 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
         unEqualSplit: updatedSplit,
       }));
     }
-  }, [expense.isEqualSplit, expense.amount]); // Run this effect when isEqualSplit or amount changes
+  }, [expense.isEqualSplit, expense.amount]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -41,10 +41,9 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
     if (name === "isEqualSplit") {
       setExpense((prev) => ({
         ...prev,
-        isEqualSplit: JSON.parse(value), // Parse string "true"/"false" to boolean
+        isEqualSplit: JSON.parse(value),
       }));
     } else if (name.startsWith("unEqualSplit")) {
-      // Dynamically update unequal splits
       const memberName = name.split("-")[1];
       setExpense((prev) => ({
         ...prev,
@@ -74,7 +73,6 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
     e.preventDefault();
 
     if (expense.isEqualSplit || getRemainingAmount() === 0) {
-      // Pass the new expense to the parent function
       onAddExpense(expense);
       setExpense(initialState);
     } else {
@@ -83,76 +81,44 @@ export default function AddExpense({ expenseWith, onAddExpense, groupName }) {
   };
 
   return (
-    <div style={{ border: "2px solid black" }}>
-      <h3>Add your expense with {groupName.split("_")[1]} here:</h3>
-      <br />
+    <Box border="2px" borderColor="black" p={4} rounded="md">
+      <Text fontWeight="bold">Add your expense with {groupName.split("_")[1]} here:</Text>
       <form onSubmit={handleAddExpense}>
-        Description:{" "}
-        <input
-          type="text"
-          value={expense.desc}
-          name="desc"
-          required={true}
-          onChange={handleChange}
-        />
-        <br />
-        Amount:{" "}
-        <input
-          type="number"
-          value={expense.amount}
-          name="amount"
-          required={true}
-          onChange={handleChange}
-        />
-        <br />
-        <button type="submit">Add</button>
-        <br />
-        Paid By:{" "}
-        <select
-          name="expensePaidBy"
-          value={expense.expensePaidBy}
-          onChange={handleChange}
-        >
+        <Input placeholder="Description" value={expense.desc} name="desc" required onChange={handleChange} mb={4} />
+        <Input type="number" placeholder="Amount" value={expense.amount} name="amount" required onChange={handleChange} mb={4} />
+        <Select name="expensePaidBy" value={expense.expensePaidBy} onChange={handleChange} mb={4}>
           {expenseWith?.map((eachMember) => (
             <option key={eachMember} value={eachMember}>
               {eachMember}
             </option>
           ))}
-        </select>
-        Split:{" "}
-        <select
-          value={expense.isEqualSplit}
-          onChange={handleChange}
-          name="isEqualSplit"
-        >
+        </Select>
+        <Select value={expense.isEqualSplit} onChange={handleChange} name="isEqualSplit" mb={4}>
           <option value={true}>Equally</option>
           <option value={false}>Unequally</option>
-        </select>
+        </Select>
         {!expense.isEqualSplit && (
           <>
             {expenseWith?.map((eachMember) => (
-              <div key={eachMember}>
-                <br />
-                {eachMember} Share:{" "}
-                <input
-                  required={true}
+              <Box key={eachMember} mb={4}>
+                {eachMember} Share:
+                <Input
+                  required
                   type="number"
-                  name={`unEqualSplit-${eachMember}`} // dynamically set input name
+                  name={`unEqualSplit-${eachMember}`}
                   value={expense.unEqualSplit[eachMember] || ""}
                   onChange={handleChange}
+                  mt={2}
                 />
-              </div>
+              </Box>
             ))}
-
-            <div
-              style={{ color: getRemainingAmount() === 0 ? "green" : "red" }}
-            >
-              Remaining Amount:
-              {" " + getRemainingAmount()}
-            </div>
+            <Text color={getRemainingAmount() === 0 ? "green" : "red"} mb={4}>
+              Remaining Amount: {getRemainingAmount()}
+            </Text>
           </>
         )}
+        <Button type="submit" colorScheme="blue">Add</Button>
       </form>
-    </div>
+    </Box>
   );
 }

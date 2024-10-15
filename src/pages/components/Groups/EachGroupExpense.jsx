@@ -1,101 +1,92 @@
-
 import axios from 'axios';
-import floorToTwoDecimal from '../../components/utils'
+import floorToTwoDecimal from '../../components/utils';
 import { useContext } from 'react';
+import { Box, VStack, HStack, Text, Button } from '@chakra-ui/react';
 import { AppContext } from 'src/pages/_app';
 
-export default function EachExpense({ groupMembers = [], groupData = [] ,fetchAllExpenses ,groupName}) {
-
+export default function EachExpense({ groupMembers = [], groupData = [], fetchAllExpenses, groupName }) {
   const expensesData = groupData.expenses;
-  const expenseStyle = {
-    border: "1px solid black",
-    borderCollapse: "collapse",
+
+  const { credentials } = useContext(AppContext);
+  const { userName, password } = credentials;
+
+  const handleDeleteExpense = async (expenseID) => {
+    let response = await axios.post('/api/groups/deleteOneExpense', {
+      userName: userName,
+      password: password,
+      groupName: groupName,
+      expenseID: expenseID
+    });
+    alert(response.data.message);
+    fetchAllExpenses();
   };
 
-  const {credentials} = useContext(AppContext)
-  const {userName,password} = credentials;
-
-  const handleDeleteExpense = async (expenseID) =>{
-    let response = await axios.post('/api/groups/deleteOneExpense',{
-            userName: userName,
-            password: password,
-            groupName: groupName,
-            expenseID: expenseID
-    })
-    alert(response.data.message);
-    fetchAllExpenses()
-
-  }
-
   return (
-    <div style={{ border: "2px solid black" }}>
-      <table style={{ border: "1px solid black", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <td style={expenseStyle}>Date</td>
-            <td style={expenseStyle}>Expense name</td>
-            <td style={expenseStyle}>Paid By</td>
-            <td style={expenseStyle}>Is equal split?</td>
-            <td style={expenseStyle}>Amount</td>
-            <td style={expenseStyle}>Split Details</td>
-          </tr>
-        </thead>
-        <tbody>
-          {expensesData?.length > 0 &&
-            expensesData.map((eachItem, ind) => (
-              <tr key={ind}>
-                <td style={expenseStyle}>
-                  {new Date(eachItem.dateAdded).toLocaleDateString("en-GB", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  })}
-                  <button onClick={()=>handleDeleteExpense(eachItem.expenseID)}>Delete</button>
-                </td>
-                <td style={expenseStyle}>{eachItem.expenseTitle}</td>
-                <td style={expenseStyle}>{eachItem.expensePaidBy}</td>
-                <td style={expenseStyle}>
-                  {eachItem.isEqualSplit ? "Yes" : "No"}
-                </td>
-                <td style={expenseStyle}>
-                  <div style={{ color: "blue" }}>Total: {eachItem.totalAmount}</div>
-                </td>
-                <td style={expenseStyle}>
-                  {eachItem?.isEqualSplit ? (
-                    <div style={{ color: "red" }}>
-                      {/* Equal split - show the share for each member */}
-                      {groupMembers.map((member) => (
-                        <div key={member}>
-                          {member}:{" "}
-                          {floorToTwoDecimal(eachItem?.unEqualSplit?.[member] || "N/A")}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <>
-                      {/* Unequal split - show the custom shares for each member */}
-                      {groupMembers.map((member) => (
-                        <div key={member}>
-                          {member}:{" "}
-                          <span
-                            style={{
-                              color:
-                                eachItem.expensePaidBy === member
-                                  ? "green"
-                                  : "red",
-                            }}
-                          >
-                            {floorToTwoDecimal(eachItem?.unEqualSplit?.[member]) || "N/A"}
-                          </span>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
+    <VStack spacing={4} align="stretch" width="100%">
+      {expensesData?.length > 0 ? (
+        expensesData.map((eachItem, ind) => (
+          <Box
+            key={ind}
+            p={4}
+            borderWidth="1px"
+            borderRadius="lg"
+            bg="gray.50"
+            boxShadow="sm"
+            width="100%"
+          >
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Date:</Text>
+              <Text>{new Date(eachItem.dateAdded).toLocaleDateString("en-GB")}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Expense Name:</Text>
+              <Text>{eachItem.expenseTitle}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Paid By:</Text>
+              <Text>{eachItem.expensePaidBy}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Is Equal Split?</Text>
+              <Text>{eachItem.isEqualSplit ? "Yes" : "No"}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Total Amount:</Text>
+              <Text>{eachItem.totalAmount}</Text>
+            </HStack>
+
+            <Box>
+              <Text fontWeight="bold">Split Details:</Text>
+              {groupMembers.map((member) => (
+                <HStack key={member} justify="space-between">
+                  <Text>{member}:</Text>
+                  <Text
+                    color={
+                      eachItem.expensePaidBy === member ? 'green.500' : 'red.500'
+                    }
+                  >
+                    {floorToTwoDecimal(eachItem?.unEqualSplit?.[member] || 'N/A')}
+                  </Text>
+                </HStack>
+              ))}
+            </Box>
+
+            <Button
+              mt={4}
+              colorScheme="red"
+              onClick={() => handleDeleteExpense(eachItem.expenseID)}
+            >
+              Delete
+            </Button>
+          </Box>
+        ))
+      ) : (
+        <Text>No expenses to show.</Text>
+      )}
+    </VStack>
   );
 }
