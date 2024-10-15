@@ -61,7 +61,7 @@ export default function EachExpense({ topicName, expensesData = [], fetchAllExpe
             </HStack>
 
             <HStack justify="space-between">
-              <Text fontWeight="bold">{topicName}'s Share:</Text>
+              <Text fontWeight="bold">{topicName}&apos;s Share:</Text>
               <Text>{eachItem?.unEqualSplit[topicName]}</Text>
             </HStack>
 

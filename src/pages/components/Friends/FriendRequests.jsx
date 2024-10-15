@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Box, Button, VStack, Heading, ListItem, UnorderedList } from "@chakra-ui/react";
 import { AppContext } from "src/pages/_app";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo";
+import { Text } from "@chakra-ui/react";
 
 export default function FriendRequests() {
   const { state, setState, credentials } = useContext(AppContext);

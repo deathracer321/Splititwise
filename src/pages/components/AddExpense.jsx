@@ -127,7 +127,7 @@ export default function AddExpense({ expenseWith, onAddExpense }) {
               </FormControl>
 
               <FormControl id="unEqualSplitFriend" isRequired>
-                <FormLabel>Friend's share:</FormLabel>
+                <FormLabel>Friend&apos;s share:</FormLabel>
                 <Input
                   type="number"
                   name="unEqualSplitFriend"
