@@ -35,7 +35,7 @@ export default function TotalSettlements({ expenses = [], expenseWith }) {
         color={isPositive ? "green.500" : "red.500"}
       >
         <b>{expenseWith}</b> {isPositive ? "should give you " : "receives from you "}: 
-        {" " + Math.abs(floorToTwoDecimal(settlementAmount))}
+        {" " + floorToTwoDecimal(Math.abs(settlementAmount))}
       </Text>
     </Box>
   );

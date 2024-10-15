@@ -3,6 +3,7 @@ import { Box, Button, VStack, Heading, ListItem, UnorderedList } from "@chakra-u
 import { AppContext } from "src/pages/_app";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo";
 import { Text } from "@chakra-ui/react";
+import axios from "axios";
 
 export default function FriendRequests() {
   const { state, setState, credentials } = useContext(AppContext);

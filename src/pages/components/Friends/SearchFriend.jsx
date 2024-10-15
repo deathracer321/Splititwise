@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Box, Button, Input, Heading, VStack, Text } from "@chakra-ui/react";
 import { AppContext } from "src/pages/_app";
 import fetchAndSyncUserInfo from "../../../lib/fetchAndSyncUserInfo";
+import axios from "axios";
 
 export default function SearchFriend() {
   const [searchString, setSearchString] = useState('');
