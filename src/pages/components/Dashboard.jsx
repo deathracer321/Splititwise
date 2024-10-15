@@ -1,35 +1,35 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Friends from './Friends/Friends';
 import Groups from './Groups/Groups';
 import Profile from './Profile';
 import { AppContext } from "../_app";
 
 export default function Dashboard() {
-  const { state, setState, credentials, setCredentials} = useContext(AppContext);
-  const {userName,password} = credentials
+  const { state, setState, credentials, setCredentials } = useContext(AppContext);
+  const { userName, password } = credentials;
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState('Friends');
   const [isClient, setIsClient] = useState(false); // Check if we're on the client side
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setCredentials({
-      userName : sessionStorage.getItem('userName'),
-      password : sessionStorage.getItem('password')
-    })
-  },[])
+      userName: sessionStorage.getItem('userName'),
+      password: sessionStorage.getItem('password')
+    });
+  }, []);
 
   // Handle logout
   const handleLogout = () => {
     if (isClient) {
       localStorage.removeItem("userInfo");
-      sessionStorage.removeItem('userName')
-      sessionStorage.removeItem('password')
+      sessionStorage.removeItem('userName');
+      sessionStorage.removeItem('password');
       setCredentials({
-        userName : '',
-        password : ''
-      })
+        userName: '',
+        password: ''
+      });
       router.push("./Login");
     }
   };
@@ -65,7 +65,7 @@ export default function Dashboard() {
     }
   };
 
-  // Ensure we only check cred on the client side
+  // Ensure we only check credentials on the client side
   useEffect(() => {
     setIsClient(true); // We're now on the client side
     if (isClient && !sessionStorage.getItem('userName')) {
@@ -74,20 +74,45 @@ export default function Dashboard() {
   }, [isClient, router]);
 
   return (
-    <>
-      <div className="dashboardMainView">
-        {isClient && (
-          <button onClick={handleLogout} className="Logout">
-            Logout as {isClient && userName}
-          </button>
-        )}
+    <Box p={4}>
+      {isClient && (
+        <Flex justifyContent="space-between" mb={4}>
+          <Text fontSize="lg" fontWeight="bold">
+            Welcome, {isClient && userName}
+          </Text>
+          <Button colorScheme="teal" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Flex>
+      )}
+
+      <Box mb={4}>
         {returnCurrentComponent(currentTab)}
-      </div>
-      <div className="dashboardBottomMenu">
-        <button onClick={tabClickHandler} id="Friends">Friends</button>
-        <button onClick={tabClickHandler} id="Groups">Groups</button>
-        <button onClick={tabClickHandler} id="Profile">Profile</button>
-      </div>
-    </>
+      </Box>
+
+      <Flex justifyContent="space-around" mt={8}>
+        <Button
+          colorScheme={currentTab === 'Friends' ? 'teal' : 'gray'}
+          id="Friends"
+          onClick={tabClickHandler}
+        >
+          Friends
+        </Button>
+        <Button
+          colorScheme={currentTab === 'Groups' ? 'teal' : 'gray'}
+          id="Groups"
+          onClick={tabClickHandler}
+        >
+          Groups
+        </Button>
+        <Button
+          colorScheme={currentTab === 'Profile' ? 'teal' : 'gray'}
+          id="Profile"
+          onClick={tabClickHandler}
+        >
+          Profile
+        </Button>
+      </Flex>
+    </Box>
   );
 }

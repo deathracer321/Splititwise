@@ -1,115 +1,82 @@
 import axios from "axios";
 import { useContext } from "react";
+import { Box, Button, Text, VStack, HStack } from "@chakra-ui/react";
 import { AppContext } from "../_app";
 
-export default function EachExpense({ topicName, expensesData = [],fetchAllExpenses }) {
-  const expenseStyle = {
-    border: "1px solid black",
-    borderCollapse: "collapse",
+export default function EachExpense({ topicName, expensesData = [], fetchAllExpenses }) {
+  const { credentials } = useContext(AppContext);
+  const { userName } = credentials;
+
+  const handleDeleteExpense = async (expenseID) => {
+    let response = await axios.post('/api/deleteOneExpense', {
+      userName,
+      expenseWith: topicName,
+      expenseID
+    });
+    alert(response.data.message);
+    fetchAllExpenses();
   };
 
-  const {credentials} = useContext(AppContext);
-  const {userName,password} = credentials
-
-  const handleDeleteExpense = async (expenseID) =>{
-    let response = await axios.post('/api/deleteOneExpense',{
-            userName: userName,
-            password: password,
-            expenseWith: topicName,
-            expenseID: expenseID
-    })
-    alert(response.data.message);
-    fetchAllExpenses()
-  }
-
   return (
-    <div style={{ border: "2px solid black" }}>
-      <table style={{ border: "1px solid black", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <td style={expenseStyle}>Date</td>
-            <td style={expenseStyle}>Expense name</td>
-            <td style={expenseStyle}>is lent?</td>
-            <td style={expenseStyle}>is equal split?</td>
-            <td style={expenseStyle}>Amount</td>
-          </tr>
-        </thead>
-        <tbody>
-          {expensesData?.length>0 && expensesData.map((eachItem, ind) => (
-            <tr key={ind}>
-              <td style={expenseStyle}>
-                {new Date(eachItem.dateAdded).toLocaleDateString(
-                  "en-GB",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true, // This makes it 24-hour format, set to true for 12-hour format
-                  }
-                )}
-                <button onClick={()=>handleDeleteExpense(eachItem.expenseID)}>Delete</button>
-              </td>
-              <td style={expenseStyle}>
-                {eachItem.expenseTitle}
-              </td>
-              <td style={expenseStyle}>
-                {eachItem.expensePaidBy ===
-                userName
-                  ? "Yes"
-                  : "No"}
-              </td>
-              <td style={expenseStyle}>
-                {eachItem.isEqualSplit ? "Yes" : "No"}
-              </td>
-              <td style={expenseStyle}>
-                <div style={{ color: "blue" }}>
-                  Total: {eachItem.totalAmount}
-                </div>
-                <br />
-                {eachItem?.isEqualSplit ? (
-                  <div style={{color: "red"}}>
-                    your share : 
-                  {eachItem?.unEqualSplit[
-                    userName
-                  ]}
-                  </div>
-                ) : (
-                  <>
-                    You:{" "}
-                    <div
-                      style={{
-                        color:
-                          eachItem.expensePaidBy ===
-                          userName
-                            ? "green"
-                            : "red",
-                      }}
-                    >
-                      {
-                        eachItem?.unEqualSplit[
-                          userName
-                        ]
-                      }
-                    </div>
-                    <br />
-                    {topicName}:
-                    <div
-                      style={{
-                        color:
-                          eachItem.expensePaidBy ===
-                          userName
-                            ? "red"
-                            : "green",
-                      }}
-                    >
-                      {eachItem?.unEqualSplit[topicName]}
-                    </div>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <VStack spacing={4} align="stretch">
+      {expensesData?.length > 0 ? (
+        expensesData.map((eachItem, ind) => (
+          <Box
+            key={ind}
+            p={4}
+            borderWidth="1px"
+            borderRadius="lg"
+            bg="gray.50"
+            boxShadow="sm"
+            w="100%"
+          >
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Date:</Text>
+              <Text>{new Date(eachItem.dateAdded).toLocaleDateString("en-GB")}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Expense Name:</Text>
+              <Text>{eachItem.expenseTitle}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Is Lent:</Text>
+              <Text>{eachItem.expensePaidBy === userName ? "Yes" : "No"}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Is Equal Split:</Text>
+              <Text>{eachItem.isEqualSplit ? "Yes" : "No"}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Total Amount:</Text>
+              <Text>{eachItem.totalAmount}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">Your Share:</Text>
+              <Text>{eachItem?.unEqualSplit[userName]}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold">{topicName}'s Share:</Text>
+              <Text>{eachItem?.unEqualSplit[topicName]}</Text>
+            </HStack>
+
+            <Button
+              mt={4}
+              colorScheme="red"
+              onClick={() => handleDeleteExpense(eachItem.expenseID)}
+            >
+              Delete
+            </Button>
+          </Box>
+        ))
+      ) : (
+        <Text>No expenses to show.</Text>
+      )}
+    </VStack>
   );
 }

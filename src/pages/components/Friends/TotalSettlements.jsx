@@ -1,35 +1,42 @@
-import { useContext, useEffect } from 'react';
-import floorToTwoDecimal from '../utils'
+import { useContext } from 'react';
+import { Box, Text } from '@chakra-ui/react';
+import floorToTwoDecimal from '../utils';
 import { AppContext } from 'src/pages/_app';
-export default function TotalSettlements({expenses =[], expenseWith}){
 
-    const {credentials} = useContext(AppContext)
-    const {userName,password} = credentials;
+export default function TotalSettlements({ expenses = [], expenseWith }) {
+  const { credentials } = useContext(AppContext);
+  const { userName } = credentials;
 
-    const settlementWithEachPerson = (withWhom) =>{
-// this function iterates through all the expenses in this group and return the final value with the member passed
-        let withWhomSettlemet = 0;
-        expenses?.forEach((eachExpense)=>{
-            let paidBy = eachExpense?.expensePaidBy;
-            let withWhomShare = Number(eachExpense.unEqualSplit?.[withWhom]) || 0
-            let myshare = Number(eachExpense.unEqualSplit?.[userName])
-            if(paidBy===userName){
-                //this user paid the expense
-                withWhomSettlemet = withWhomSettlemet + withWhomShare
-            }
-            if(paidBy===withWhom){
-                // some other person paid it
-                withWhomSettlemet = withWhomSettlemet - myshare
-            }
-        })
-        
-        return withWhomSettlemet
-    }
+  const settlementWithEachPerson = (withWhom) => {
+    let withWhomSettlemet = 0;
+    expenses?.forEach((eachExpense) => {
+      let paidBy = eachExpense?.expensePaidBy;
+      let withWhomShare = Number(eachExpense.unEqualSplit?.[withWhom]) || 0;
+      let myshare = Number(eachExpense.unEqualSplit?.[userName]);
+      if (paidBy === userName) {
+        withWhomSettlemet = withWhomSettlemet + withWhomShare;
+      }
+      if (paidBy === withWhom) {
+        withWhomSettlemet = withWhomSettlemet - myshare;
+      }
+    });
 
+    return withWhomSettlemet;
+  };
 
+  const settlementAmount = settlementWithEachPerson(expenseWith);
+  const isPositive = settlementAmount > 0;
 
-    return <div style={{border: "2px solid red"}}>
-        <h2>Cumulative Settlemets:</h2>
-         <p><b>{expenseWith}</b> {settlementWithEachPerson(expenseWith) > 0 ? "should give you" : "receives from you"}: {floorToTwoDecimal(settlementWithEachPerson(expenseWith))}</p>
-    </div>
+  return (
+    <Box border="2px solid red" p="10px" my="10px" borderRadius="8px">
+      <Text
+        fontSize="lg"
+        mt="4"
+        color={isPositive ? "green.500" : "red.500"}
+      >
+        <b>{expenseWith}</b> {isPositive ? "should give you " : "receives from you "}: 
+        {" " + Math.abs(floorToTwoDecimal(settlementAmount))}
+      </Text>
+    </Box>
+  );
 }
